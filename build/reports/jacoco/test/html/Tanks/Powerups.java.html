@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Powerups.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tanks_scaffold</a> &gt; <a href="index.source.html" class="el_package">Tanks</a> &gt; <span class="el_source">Powerups.java</span></div><h1>Powerups.java</h1><pre class="source lang-java linenums">package Tanks;
+
+/**
+ * Manages power-ups for tanks, including repairs, fuel refills, and additional parachutes.
+ */
+public class Powerups {
+
+    private App app; // Reference to the main game app to access scores and update them
+<span class="fc" id="L9">    private int repairCost = 20; // Cost in score points to repair a tank</span>
+<span class="fc" id="L10">    private int petrolCost = 10; // Cost in score points to buy additional fuel</span>
+<span class="fc" id="L11">    private int chuteCost = 30; // Cost in score points to buy an additional parachute</span>
+<span class="fc" id="L12">    private int maxHealth = 100; // Maximum health a tank can have</span>
+<span class="fc" id="L13">    private int morePetrol = 200; // Amount of fuel added when petrol is bought</span>
+
+    /**
+     * Constructor to create a Powerups object.
+     * @param app The main game app reference.
+     */
+<span class="fc" id="L19">    public Powerups(App app) {</span>
+<span class="fc" id="L20">        this.app = app;</span>
+<span class="fc" id="L21">    }</span>
+
+    /**
+     * Repairs a tank, increasing its health by 20 points if the player's score is sufficient.
+     * @param tank The tank to repair.
+     */
+    public void repairTank(Tank tank) { // increase the tanks health by 20 if the score is above 20
+<span class="fc" id="L28">        int a = app.getAScore();</span>
+<span class="fc" id="L29">        int b = app.getBScore();</span>
+<span class="fc" id="L30">        int c = app.getCScore();</span>
+<span class="fc" id="L31">        int d = app.getDScore();</span>
+<span class="pc bpc" id="L32" title="6 of 16 branches missed.">        if ((a &gt;= repairCost || b &gt;= repairCost || c &gt;= repairCost || d &gt;= repairCost) &amp;&amp; (a &gt; 0 || b &gt; 0 || c &gt; 0 || d &gt; 0)) {</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">            if (tank.getHealth() &lt; maxHealth) {</span>
+<span class="fc" id="L34">                tank.setHealth(Math.min(tank.getHealth() + 20, maxHealth));</span>
+<span class="fc" id="L35">                app.updateScore(tank.getTankName(), -repairCost);</span>
+            }
+        }
+<span class="fc" id="L38">    }</span>
+
+    /**
+     * Buys additional fuel for a tank, increasing its fuel by 200 points if the player's score is sufficient.
+     * @param tank The tank to refuel.
+     */
+    public void buyPetrol(Tank tank) { // increase the tanks fuel by 200 if the score is above 10
+<span class="fc" id="L45">        int a = app.getAScore();</span>
+<span class="fc" id="L46">        int b = app.getBScore();</span>
+<span class="fc" id="L47">        int c = app.getCScore();</span>
+<span class="fc" id="L48">        int d = app.getDScore();</span>
+<span class="pc bpc" id="L49" title="6 of 16 branches missed.">        if ((a &gt;= petrolCost || b &gt;= petrolCost || c &gt;= petrolCost || d &gt;= petrolCost) &amp;&amp; (a &gt; 0 || b &gt; 0 || c &gt; 0 || d &gt; 0)) {</span>
+<span class="fc" id="L50">            tank.setPetrol(tank.remainingPetrol() + morePetrol);</span>
+<span class="fc" id="L51">            app.updateScore(tank.getTankName(), -petrolCost);</span>
+        }
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * Purchases an additional parachute for a tank if the player's score is sufficient.
+     * @param tank The tank to receive the parachute.
+     */
+    public void buyChute(Tank tank) { // extension to buy a new parachute
+<span class="fc" id="L60">        int a = app.getAScore();</span>
+<span class="fc" id="L61">        int b = app.getBScore();</span>
+<span class="fc" id="L62">        int c = app.getCScore();</span>
+<span class="fc" id="L63">        int d = app.getDScore();</span>
+<span class="pc bpc" id="L64" title="6 of 16 branches missed.">        if ((a &gt;= chuteCost || b &gt;= chuteCost || c &gt;= chuteCost || d &gt;= chuteCost) &amp;&amp; (a &gt; 0 || b &gt; 0 || c &gt; 0 || d &gt; 0)) {</span>
+<span class="fc" id="L65">            tank.getParachute().setParachutes(tank.getParachute().getRemainingParachutes() + 1);</span>
+<span class="fc" id="L66">            app.updateScore(tank.getTankName(), -chuteCost);</span>
+        }
+<span class="fc" id="L68">    }</span>
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

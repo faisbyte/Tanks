@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Tank.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tanks_scaffold</a> &gt; <a href="index.source.html" class="el_package">Tanks</a> &gt; <span class="el_source">Tank.java</span></div><h1>Tank.java</h1><pre class="source lang-java linenums">package Tanks;
+
+import processing.core.PApplet;
+
+/**
+ * Represents a tank in the game, managing its position, health, fuel, power level, and interactions with terrain and other game elements.
+ * This class includes methods for moving the tank, adjusting its turret, managing fuel consumption, and deploying parachutes.
+ */
+public class Tank {
+
+    private char tankName; // Identifier for the tank based on characters (A, B, C, D)
+    private int posX; // X-coordinate position of the tank on the grid
+    private float posY; // Y-coordinate position of the tank on the grid
+    private PApplet app; // Reference to the main Processing applet for drawing
+    private Terrain terrain; // Reference to the terrain for checking positions
+    private Bomb bomb;  // Bomb associated with the tank
+    private float speed; // Current speed of the tank
+    private float turretAngle; // Current angle of the turret
+<span class="fc" id="L19">    public int petrol = 250; // Amount of fuel left for the tank</span>
+<span class="fc" id="L20">    private int health = 100; // Current health of the tank </span>
+<span class="fc" id="L21">    public int powerLevel = 50; // Current power level for shooting</span>
+<span class="fc" id="L22">    public int descentRate = 60; // Rate at which the tank descends when falling</span>
+    private Parachute parachute; // Parachute object for managing falls
+<span class="fc" id="L24">    private boolean isFalling = false; // Flag to check if the tank is currently falling</span>
+    
+    /**
+     * Constructs a Tank object with specified settings.
+     * @param app The main Processing applet instance for drawing and handling game logic.
+     * @param tankName The character name of the tank.
+     * @param gridX The x-coordinate on the grid where the tank is initially placed.
+     * @param gridY The y-coordinate on the grid where the tank is initially placed.
+     */
+<span class="fc" id="L33">    public Tank(PApplet app, char tankName, int gridX, int gridY) {</span>
+<span class="fc" id="L34">        this.app = app;</span>
+<span class="fc" id="L35">        this.tankName = tankName;</span>
+<span class="fc" id="L36">        this.posX = gridX * App.CELLSIZE;</span>
+<span class="fc" id="L37">        this.posY =  Math.round(terrain.getYc(gridX + 15));</span>
+<span class="fc" id="L38">        this.turretAngle = PApplet.HALF_PI; </span>
+<span class="fc" id="L39">        this.parachute = new Parachute(this, app);</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * Increases the power level of the tank, ensuring it does not exceed the tank's health.
+     */
+    public void increasePower() {
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (powerLevel &lt; this.getHealth()) {</span>
+<span class="fc" id="L47">            powerLevel += 1;</span>
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">            if (powerLevel &gt;= this.getHealth()) {</span>
+<span class="fc" id="L49">                powerLevel = this.getHealth();</span>
+            }
+        }
+<span class="fc" id="L52">    }</span>
+
+    /**
+     * Decreases the power level of the tank, ensuring it does not go below zero.
+     */
+    public void decreasePower() {
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if (powerLevel &gt; 0) {</span>
+<span class="fc" id="L59">            powerLevel -= 1;</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">            if (powerLevel &lt;= 0) {</span>
+<span class="fc" id="L61">                powerLevel = 0;</span>
+            }
+        }
+<span class="fc" id="L64">    }</span>
+
+    /**
+     * Returns the current power level of the tank.
+     * @return The current power level.
+     */
+    public int getPowerLevel() {
+<span class="fc" id="L71">        return powerLevel;</span>
+    }
+
+    /**
+     * Returns the X positon of the tank.
+     * @return The X position.
+     */
+    public float getPosX() {
+<span class="fc" id="L79">        return posX;</span>
+    }
+
+    /**
+     * Returns the Y positon of the tank.
+     * @return The Y position.
+     */
+    public float getPosY() {
+<span class="fc" id="L87">        return posY;</span>
+    }
+
+    /**
+     * Returns the character of the current tank.
+     * @return The tank character.
+     */
+    public char getTankName() {
+<span class="fc" id="L95">        return tankName;</span>
+    }
+
+    /**
+     * Inflicts damage on the tank, reducing its health.
+     * @param amount The amount of damage to inflict.
+     */
+    public void damage(int amount) {
+<span class="fc" id="L103">        health -= amount;</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (health &lt; 0) {</span>
+<span class="fc" id="L105">            health = 0;</span>
+        }
+<span class="fc" id="L107">    }</span>
+
+    /**
+     * Returns the current health of the tank.
+     * @return The tank health.
+     */
+    public int getHealth() {
+<span class="fc" id="L114">        return health;</span>
+    }
+    
+    /**
+     * Sets the health for the current tank.
+     * @param health Set the health.
+     */
+    public void setHealth(int health) {
+<span class="fc" id="L122">        this.health = health;</span>
+<span class="fc" id="L123">    }</span>
+
+    /**
+     * Sets the speed for the tank.
+     * @param speed Tank's speed.
+     */
+    public void setSpeed(float speed) { // set the speed of the tank
+<span class="fc" id="L130">        this.speed = speed;</span>
+<span class="fc" id="L131">    }</span>
+
+    /**
+     * Sets the angle of the turret for the tank.
+     * @param angle Turret angle.
+     */
+    public void setTurretAngle(float angle) {
+<span class="fc" id="L138">        turretAngle = PApplet.constrain(angle, 0, PApplet.PI); // the turret can only rotate 180 degrees horizontally</span>
+<span class="fc" id="L139">    }</span>
+
+    /**
+     * Returns the angle of the turret for the tank.
+     * @return The turret angle.
+     */
+    public float getTurretAngle() {
+<span class="fc" id="L146">        return turretAngle;</span>
+    }
+
+    /**
+     * Moves the tank according to its current speed and updates its position based on terrain and fuel status.
+     */
+    public void go() {
+<span class="fc" id="L153">        int oldPos = posX;</span>
+<span class="fc" id="L154">        posX += speed / App.FPS;</span>
+<span class="fc" id="L155">        posY = Math.round(terrain.getYc(posX + 15));</span>
+<span class="fc" id="L156">        float distance = Math.abs(posX - oldPos);</span>
+<span class="fc" id="L157">        petrolOver((int) distance);</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">        if (petrol &lt;= 0) { // if fuel is empty then the tank should stop moving</span>
+<span class="nc" id="L159">            posX = oldPos;</span>
+<span class="nc" id="L160">            speed = 0;</span>
+        }
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">        if (posY &gt; 640) { // destroy the tank if it goes below the map</span>
+            try {
+<span class="nc" id="L164">                bomb.destroyTerrain();</span>
+<span class="nc" id="L165">            } catch (NullPointerException e) {</span>
+<span class="nc" id="L166">                System.err.println(&quot;Tank did not explode even after going below the terrain.&quot;);      </span>
+<span class="nc" id="L167">            }</span>
+        }
+<span class="fc" id="L169">    }</span>
+
+    /**
+     * Sets the fuel for the tank.
+     * @param petrol The fuel for the tank.
+     */
+    public void setPetrol(int petrol) {
+<span class="fc" id="L176">        this.petrol = petrol;</span>
+<span class="fc" id="L177">    }</span>
+    
+    /**
+     * Calculates the amount of petrol consumed on the distance travelled.
+     * @param distance The distance travelled.
+     */
+    public void petrolOver (int distance) { // fuel reduces by one unit as the tank travels one pixel horizontally
+<span class="fc" id="L184">        petrol -= distance;</span>
+<span class="fc" id="L185">        petrol = Math.max(petrol, 0);</span>
+<span class="fc" id="L186">    }</span>
+
+    /**
+     * Returns the amount of petrol left for the tank.
+     * @return Fuel
+     */
+    public int remainingPetrol() {
+<span class="fc" id="L193">        return petrol;</span>
+    }
+
+    /**
+     * Updates the tank's state, checking for mid-air conditions and managing parachute deployment.
+     */
+    public void update() {
+<span class="fc bfc" id="L200" title="All 4 branches covered.">        if (this.posY + 10 &lt; terrain.getYc(this.posX + 15) &amp;&amp; !parachute.isDeployed()) {</span>
+            // when mid air
+<span class="fc" id="L202">            isFalling = true;</span>
+<span class="fc" id="L203">            parachute.deployParachute();</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">        } else if (this.posY &gt; terrain.getYc(this.posX + 15)) {</span>
+<span class="fc" id="L205">            parachute.isDeployed = false;</span>
+<span class="fc" id="L206">            isFalling = false;</span>
+        }
+
+<span class="fc bfc" id="L209" title="All 2 branches covered.">        if (isFalling) {</span>
+<span class="fc" id="L210">            this.posY += descentRate / App.FPS;</span>
+        }
+
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (parachute.isDeployed) {</span>
+<span class="fc" id="L214">            parachute.displayParachute();</span>
+        }
+<span class="fc" id="L216">    }</span>
+
+    /**
+     * Sets the rate the tank falls down when the terrain below it is destroyed.
+     * @param rate Rate of descent
+     */
+    public void setDescentRate(int rate) {
+<span class="fc" id="L223">        this.descentRate = rate;</span>
+<span class="fc" id="L224">        this.isFalling = true;</span>
+<span class="fc" id="L225">    }</span>
+
+    /**
+     * Returns the terrain.
+     * @return The terrain.
+     */
+    public Terrain getTerrain() {
+<span class="fc" id="L232">        return this.terrain;</span>
+    }
+
+    /**
+     * Displays the tank on the canvas, using colors and shapes specified for each tank type.
+     */
+    public void displayTanks() {
+<span class="pc bpc" id="L239" title="1 of 5 branches missed.">        switch(tankName) {</span>
+            case 'A':
+<span class="fc" id="L241">                tankA();</span>
+<span class="fc" id="L242">                break;</span>
+            case 'B':
+<span class="fc" id="L244">                tankB();</span>
+<span class="fc" id="L245">                break;</span>
+            case 'C':
+<span class="fc" id="L247">                tankC();</span>
+<span class="fc" id="L248">                break;</span>
+            case 'D':
+<span class="fc" id="L250">                tankD();</span>
+                break;
+        }
+<span class="fc" id="L253">    }</span>
+
+    /**
+     * Create tank A in the game.
+     */
+    private void tankA() {
+<span class="fc" id="L259">        float iX = this.posX; // posX already contains the converted x-coordinate</span>
+<span class="fc" id="L260">        float iY = this.posY;</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">        if (!isFalling) {</span>
+<span class="fc" id="L262">            iY = terrain.getYc(iX + 15); // posY already contains the converted y-coordinate, adjusted for the tank height</span>
+        }
+<span class="fc" id="L264">        app.fill(0, 0, 255); // blue colour</span>
+<span class="fc" id="L265">        app.rect(iX, iY, App.CELLSIZE, App.CELLSIZE / 4, 40); // draw base of tank</span>
+<span class="fc" id="L266">        app.rect(iX + (App.CELLSIZE - App.CELLSIZE / 4) / 4, iY - App.CELLSIZE / 4, App.CELLSIZE / 1.5f, App.CELLSIZE / 4, 40); // draw top of tank</span>
+<span class="fc" id="L267">        app.stroke(0);</span>
+<span class="fc" id="L268">        app.strokeWeight(4);</span>
+<span class="fc" id="L269">        drawTurret();</span>
+<span class="fc" id="L270">    }</span>
+
+     /**
+     * Create tank B in the game.
+     */
+    private void tankB() {
+<span class="fc" id="L276">        app.noStroke();</span>
+<span class="fc" id="L277">        float iX = this.posX; // posX already contains the converted x-coordinate</span>
+<span class="fc" id="L278">        float iY = this.posY;</span>
+<span class="fc bfc" id="L279" title="All 2 branches covered.">        if (!isFalling) {</span>
+<span class="fc" id="L280">            iY = terrain.getYc(iX + 15); // posY already contains the converted y-coordinate, adjusted for the tank height</span>
+        }
+<span class="fc" id="L282">        app.fill(255, 0, 0); // red colour</span>
+<span class="fc" id="L283">        app.rect(iX, iY, App.CELLSIZE, App.CELLSIZE / 4, 40); // draw base of tank</span>
+<span class="fc" id="L284">        app.rect(iX + (App.CELLSIZE - App.CELLSIZE / 4) / 4, iY - App.CELLSIZE / 4, App.CELLSIZE / 1.5f, App.CELLSIZE / 4, 40); // draw top of tank</span>
+<span class="fc" id="L285">        app.stroke(0);</span>
+<span class="fc" id="L286">        app.strokeWeight(4);</span>
+<span class="fc" id="L287">        drawTurret();</span>
+<span class="fc" id="L288">    }</span>
+
+     /**
+     * Create tank C in the game.
+     */
+    private void tankC() {
+<span class="fc" id="L294">        app.noStroke();</span>
+<span class="fc" id="L295">        float iX = this.posX; // posX already contains the converted x-coordinate</span>
+<span class="fc" id="L296">        float iY = this.posY;</span>
+<span class="fc bfc" id="L297" title="All 2 branches covered.">        if (!isFalling) {</span>
+<span class="fc" id="L298">            iY = terrain.getYc(iX + 15); // posY already contains the converted y-coordinate, adjusted for the tank height</span>
+        }
+<span class="fc" id="L300">        app.fill(0, 255, 255); // cyan colour</span>
+<span class="fc" id="L301">        app.rect(iX, iY, App.CELLSIZE, App.CELLSIZE / 4, 40); // draw base of tank</span>
+<span class="fc" id="L302">        app.rect(iX + (App.CELLSIZE - App.CELLSIZE / 4) / 4, iY - App.CELLSIZE / 4, App.CELLSIZE / 1.5f, App.CELLSIZE / 4, 40); // draw top of tank</span>
+<span class="fc" id="L303">        app.stroke(0);</span>
+<span class="fc" id="L304">        app.strokeWeight(4);</span>
+<span class="fc" id="L305">        drawTurret();</span>
+<span class="fc" id="L306">    }</span>
+
+     /**
+     * Create tank D in the game.
+     */
+    private void tankD() {
+<span class="fc" id="L312">        float iX = this.posX; // posX already contains the converted x-coordinate</span>
+<span class="fc" id="L313">        float iY = this.posY;</span>
+<span class="fc bfc" id="L314" title="All 2 branches covered.">        if (!isFalling) {</span>
+<span class="fc" id="L315">            iY = terrain.getYc(iX + 15); // posY already contains the converted y-coordinate, adjusted for the tank height</span>
+        }
+<span class="fc" id="L317">        app.noStroke();</span>
+<span class="fc" id="L318">        app.fill(255, 255, 0); // yellow colour</span>
+<span class="fc" id="L319">        app.rect(iX, iY, App.CELLSIZE, App.CELLSIZE / 4, 40); // draw base of tank</span>
+<span class="fc" id="L320">        app.rect(iX + (App.CELLSIZE - App.CELLSIZE / 4) / 4, iY - App.CELLSIZE / 4, App.CELLSIZE / 1.5f, App.CELLSIZE / 4, 40); // draw top of tank</span>
+<span class="fc" id="L321">        app.stroke(0);</span>
+<span class="fc" id="L322">        app.strokeWeight(4);</span>
+<span class="fc" id="L323">        drawTurret();</span>
+<span class="fc" id="L324">    }</span>
+
+     /**
+     * Draws the turret for the tanks.
+     */
+    private void drawTurret() {
+<span class="fc" id="L330">        float iX = this.posX + App.CELLSIZE / 2; // posX already contains the converted x-coordinate</span>
+<span class="fc" id="L331">        float iY = this.posY;</span>
+<span class="fc bfc" id="L332" title="All 2 branches covered.">        if (!isFalling) {</span>
+<span class="fc" id="L333">            iY = terrain.getYc(iX) - 5; // posY already contains the converted y-coordinate, adjusted for the tank height</span>
+        }
+<span class="fc" id="L335">        float turretLength = 15; // turret length in pixels</span>
+        // endpoints below
+<span class="fc" id="L337">        float turretEndX = iX + turretLength * PApplet.cos(turretAngle);</span>
+<span class="fc" id="L338">        float turretEndY = iY - turretLength * PApplet.sin(turretAngle);</span>
+<span class="fc" id="L339">        app.stroke(0);</span>
+<span class="fc" id="L340">        app.strokeWeight(4);</span>
+<span class="fc" id="L341">        app.line(iX, iY, turretEndX, turretEndY);</span>
+<span class="fc" id="L342">    }</span>
+
+    /**
+     * Returns the color associated with the tank based on its identifier.
+     * @return The color of the tank.
+     */
+    public int getColor() {
+<span class="pc bpc" id="L349" title="1 of 5 branches missed.">        switch (tankName) {</span>
+            case 'A':
+<span class="fc" id="L351">                return app.color(0, 0, 255); // Blue</span>
+            case 'B':
+<span class="fc" id="L353">                return app.color(255, 0, 0); // Red</span>
+            case 'C':
+<span class="fc" id="L355">                return app.color(0, 255, 255); // Cyan</span>
+            case 'D':
+<span class="fc" id="L357">                return app.color(255, 255, 0); // Yellow</span>
+            default:
+<span class="nc" id="L359">                return app.color(255, 255, 255);</span>
+        }
+    }
+
+     /**
+     * Returns the number of parachutes left.
+     * @return The number of parachutes left.
+     */
+    public Parachute getParachute() {
+<span class="fc" id="L368">        return parachute;</span>
+    }
+    
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

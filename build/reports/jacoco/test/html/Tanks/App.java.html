@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>App.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tanks_scaffold</a> &gt; <a href="index.source.html" class="el_package">Tanks</a> &gt; <span class="el_source">App.java</span></div><h1>App.java</h1><pre class="source lang-java linenums">package Tanks;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+import processing.event.KeyEvent;
+import processing.event.MouseEvent; 
+
+import java.util.*;
+
+/**
+ * The main application class for the tank game, managing game initialization,
+ * input handling, game state updates, and rendering.
+ * This class extends PApplet, using the Processing library to handle graphics and UI events.
+ */
+public class App extends PApplet {
+
+    // Constants for game configuration
+    public static final int CELLSIZE = 32; //8;
+    public static final int CELLHEIGHT = 32;
+    public static final int CELLAVG = 32;
+    public static final int TOPBAR = 0;
+<span class="fc" id="L22">    public static int WIDTH = 864; //CELLSIZE*BOARD_WIDTH;</span>
+<span class="fc" id="L23">    public static int HEIGHT = 640; //BOARD_HEIGHT*CELLSIZE+TOPBAR;</span>
+<span class="fc" id="L24">    public static final int BOARD_WIDTH = WIDTH/CELLSIZE;</span>
+    public static final int BOARD_HEIGHT = 20;
+    public static final int INITIAL_PARACHUTES = 1;
+    public static final int FPS = 30;
+
+    // Game state variables
+<span class="fc" id="L30">    public int currentTankIndex = 0;  // Index of the current tank in play</span>
+<span class="fc" id="L31">    private ArrayList&lt;Bomb&gt; bombs = new ArrayList&lt;&gt;();  // List of active bombs</span>
+<span class="fc" id="L32">    private boolean upPressed = false;</span>
+<span class="fc" id="L33">    private boolean downPressed = false;</span>
+<span class="fc" id="L34">    private boolean leftArrowPressed = false;</span>
+<span class="fc" id="L35">    private boolean rightArrowPressed = false;</span>
+
+    // Game components
+    public Terrain terrain;
+    public ArrayList&lt;Tank&gt; tanks;
+    public HUD hud;
+    public static Wind wind;
+    public Powerups powerup;
+    private PImage backgroundImage;
+<span class="fc" id="L44">    public static Random random = new Random(); </span>
+
+    // Scores for individual tanks
+<span class="fc" id="L47">    private int AScore = 0;</span>
+<span class="fc" id="L48">    private int BScore = 0;</span>
+<span class="fc" id="L49">    private int CScore = 0;</span>
+<span class="fc" id="L50">    private int DScore = 0;</span>
+
+    // Level management
+<span class="fc" id="L53">    public int currentLevel = 1;</span>
+<span class="fc" id="L54">    private final int maxLevel = 3;</span>
+
+    // Configurations
+    public String configPath; // Path to the configuration file, not used in current implementation
+
+	
+	// Feel free to add any additional methods or attributes you want. Please put classes in different files.
+
+    /**
+     * Constructor for the game application, initializes configuration path and tank list.
+     */
+<span class="fc" id="L65">    public App() {</span>
+<span class="fc" id="L66">        this.configPath = &quot;config.json&quot;;</span>
+<span class="fc" id="L67">        tanks = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * Returns the character of the current tank.
+     * @return Current tank character.
+     */
+    public char getCurrentTankChar() {
+<span class="fc" id="L75">        return tanks.get(currentTankIndex).getTankName(); // get current tanks character ie a b c or d</span>
+    }
+
+    /**
+     * Returns the current level the game is running on.
+     * @return Game level.
+     */
+    public int getCurrentLevel() {
+<span class="fc" id="L83">        return this.currentLevel;</span>
+    }
+
+    /**
+     * Initialise the setting of the window size.
+     */
+	@Override
+    public void settings() {
+<span class="fc" id="L91">        size(WIDTH, HEIGHT);</span>
+<span class="fc" id="L92">    }</span>
+
+    /**
+     * Loads the level configuration from files, sets up the terrain and tanks for the specified level.
+     * @param level The level number to load.
+     */
+    public void loadLevel(int level) {
+<span class="fc" id="L99">        String terrainFile = &quot;&quot;;</span>
+<span class="fc" id="L100">        String backgroundImageFile = &quot;&quot;;</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (level == 1) {</span>
+<span class="fc" id="L102">            terrainFile = &quot;level1.txt&quot;;</span>
+<span class="fc" id="L103">            backgroundImageFile = &quot;src/main/resources/Tanks/snow.png&quot;;</span>
+        }
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        else if (level == 2) {</span>
+<span class="fc" id="L106">            terrainFile = &quot;level2.txt&quot;;</span>
+<span class="fc" id="L107">            backgroundImageFile = &quot;src/main/resources/Tanks/desert.png&quot;;</span>
+        }
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        else if (level == 3) {</span>
+<span class="fc" id="L110">            terrainFile = &quot;level3.txt&quot;;</span>
+<span class="fc" id="L111">            backgroundImageFile = &quot;src/main/resources/Tanks/basic.png&quot;;</span>
+        }
+<span class="fc" id="L113">        Terrain.tankAX.clear();</span>
+<span class="fc" id="L114">        Terrain.tankBX.clear();</span>
+<span class="fc" id="L115">        Terrain.tankCX.clear();</span>
+<span class="fc" id="L116">        Terrain.tankDX.clear();</span>
+<span class="fc" id="L117">        Terrain.tankAY.clear();</span>
+<span class="fc" id="L118">        Terrain.tankBY.clear();</span>
+<span class="fc" id="L119">        Terrain.tankCY.clear();</span>
+<span class="fc" id="L120">        Terrain.tankDY.clear();</span>
+<span class="fc" id="L121">        Terrain.heights.clear();</span>
+<span class="fc" id="L122">        Terrain.treeX.clear();</span>
+<span class="fc" id="L123">        bombs.clear();</span>
+
+<span class="fc" id="L125">        backgroundImage = loadImage(backgroundImageFile);</span>
+<span class="fc" id="L126">        terrain = new Terrain(this, this);</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        if (terrain != null) {</span>
+<span class="fc" id="L128">            terrain.loadTerrain(terrainFile);</span>
+<span class="fc" id="L129">            Terrain.applyMovingAverage(Terrain.heights);</span>
+<span class="fc" id="L130">            Terrain.applyMovingAverage(Terrain.heights); </span>
+        }
+<span class="fc" id="L132">        initializeTanks();</span>
+<span class="fc" id="L133">    }</span>
+
+    /**
+     * Initializes tanks based on terrain data.
+     */
+    public void initializeTanks() {
+<span class="fc" id="L139">        tanks.clear();</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">        for (int i = 0; i &lt; Terrain.tankAX.size(); i++) {</span>
+<span class="fc" id="L141">            tanks.add(new Tank(this, 'A', Terrain.tankAX.get(i), Terrain.tankAY.get(i)));</span>
+        }
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        for (int i = 0; i &lt; Terrain.tankBX.size(); i++) {</span>
+<span class="fc" id="L144">            tanks.add(new Tank(this, 'B', Terrain.tankBX.get(i), Terrain.tankBY.get(i)));</span>
+        }
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        for (int i = 0; i &lt; Terrain.tankCX.size(); i++) {</span>
+<span class="fc" id="L147">            tanks.add(new Tank(this, 'C', Terrain.tankCX.get(i), Terrain.tankCY.get(i)));</span>
+        }
+<span class="fc bfc" id="L149" title="All 2 branches covered.">        for (int i = 0; i &lt; Terrain.tankDX.size(); i++) {</span>
+<span class="fc" id="L150">            tanks.add(new Tank(this, 'D', Terrain.tankDX.get(i), Terrain.tankDY.get(i)));</span>
+        }
+<span class="fc" id="L152">    }</span>
+    
+
+    /**
+     * Load all resources such as images. Initialise the elements such as the player, enemies and map elements.
+     */
+	@Override
+    public void setup() {
+<span class="fc" id="L160">        frameRate(FPS);</span>
+<span class="fc" id="L161">        loadLevel(currentLevel);</span>
+<span class="fc" id="L162">        hud = new HUD(this);</span>
+<span class="fc" id="L163">        wind = new Wind(this);</span>
+<span class="fc" id="L164">        powerup = new Powerups(this);</span>
+<span class="fc" id="L165">    }</span>
+
+    /**
+     * Handles key press events for controlling tanks and interacting with the game.
+     * @param event The KeyEvent object containing details of the key pressed.
+     */
+	@Override
+    public void keyPressed(KeyEvent event){
+<span class="fc" id="L173">        super.keyPressed(event);</span>
+        try{
+<span class="fc" id="L175">            Tank tank = tanks.get(currentTankIndex);</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">            if (event.getKeyCode() == 'W') {</span>
+<span class="nc" id="L177">                tank.increasePower();</span>
+            }
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">            else if (event.getKeyCode() == 'S') {</span>
+<span class="nc" id="L180">                tank.decreasePower();</span>
+            }
+<span class="pc bpc" id="L182" title="2 of 4 branches missed.">            if (getCurrentTankChar() == 'A' &amp;&amp; event.getKeyCode() == LEFT) { // checking for movements only if it is the current tanks' turn</span>
+<span class="nc" id="L183">                leftArrowPressed = true;</span>
+            }
+<span class="pc bpc" id="L185" title="2 of 4 branches missed.">            else if (getCurrentTankChar() == 'A' &amp;&amp; event.getKeyCode() == RIGHT) {</span>
+<span class="nc" id="L186">                rightArrowPressed = true;</span>
+            }
+<span class="pc bpc" id="L188" title="3 of 4 branches missed.">            else if (getCurrentTankChar() == 'B' &amp;&amp; event.getKeyCode() == LEFT) {</span>
+<span class="nc" id="L189">                leftArrowPressed = true;</span>
+            }
+<span class="pc bpc" id="L191" title="3 of 4 branches missed.">            else if (getCurrentTankChar() == 'B' &amp;&amp; event.getKeyCode() == RIGHT) {</span>
+<span class="nc" id="L192">                rightArrowPressed = true;</span>
+            }
+<span class="pc bpc" id="L194" title="3 of 4 branches missed.">            else if (getCurrentTankChar() == 'C' &amp;&amp; event.getKeyCode() == LEFT) {</span>
+<span class="nc" id="L195">                leftArrowPressed = true;</span>
+            }
+<span class="pc bpc" id="L197" title="3 of 4 branches missed.">            else if (getCurrentTankChar() == 'C' &amp;&amp; event.getKeyCode() == RIGHT) {</span>
+<span class="nc" id="L198">                rightArrowPressed = true;</span>
+            }
+<span class="pc bpc" id="L200" title="3 of 4 branches missed.">            else if (getCurrentTankChar() == 'D' &amp;&amp; event.getKeyCode() == LEFT) {</span>
+<span class="nc" id="L201">                leftArrowPressed = true;</span>
+            }
+<span class="pc bpc" id="L203" title="3 of 4 branches missed.">            else if (getCurrentTankChar() == 'D' &amp;&amp; event.getKeyCode() == RIGHT) {</span>
+<span class="nc" id="L204">                rightArrowPressed = true;</span>
+            }
+
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">            if (event.getKeyCode() == UP) {</span>
+<span class="nc" id="L208">                upPressed = true;</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">            } else if (event.getKeyCode() == DOWN) {</span>
+<span class="nc" id="L210">                downPressed = true;</span>
+            }
+
+<span class="pc bpc" id="L213" title="1 of 2 branches missed.">            if (event.getKeyCode() == 'R') {</span>
+<span class="nc" id="L214">                powerup.repairTank(tank);</span>
+            }
+
+<span class="pc bpc" id="L217" title="5 of 6 branches missed.">            if (event.getKeyCode() == 'R' &amp;&amp; tanks.size() == 1 &amp;&amp; currentLevel == 3) {</span>
+<span class="nc" id="L218">                currentLevel = 1;</span>
+<span class="nc" id="L219">                loadLevel(currentLevel);</span>
+            }
+
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">            if (event.getKeyCode() == 'F') {</span>
+<span class="nc" id="L223">                powerup.buyPetrol(tank);</span>
+            }
+
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">            if (event.getKeyCode() == 'P') {</span>
+<span class="nc" id="L227">                powerup.buyChute(tank);</span>
+            }
+
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">            if (event.getKeyCode() == ' ') {</span>
+<span class="nc" id="L231">                wind.updateWind(); // update the wind every time a players' turn switches</span>
+<span class="nc" id="L232">                Tank currentTank = tanks.get(currentTankIndex);</span>
+<span class="nc" id="L233">                Bomb bomb = null;</span>
+<span class="nc" id="L234">                float turretEndX = currentTank.getPosX() + App.CELLSIZE / 2 + 15 * PApplet.cos(currentTank.getTurretAngle()); // end point of the turret</span>
+<span class="nc" id="L235">                float turretEndY = currentTank.getPosY() - 15 * PApplet.sin(currentTank.getTurretAngle()); // height of the turret</span>
+<span class="nc bnc" id="L236" title="All 5 branches missed.">                switch (currentTank.getTankName()) {</span>
+                    case 'A':
+<span class="nc" id="L238">                        bomb = Bomb.bombA(this, turretEndX, turretEndY, currentTank.getTurretAngle(), tank.getPowerLevel());</span>
+<span class="nc" id="L239">                        break;</span>
+                    case 'B':
+<span class="nc" id="L241">                        bomb = Bomb.bombB(this, turretEndX, turretEndY, currentTank.getTurretAngle(), tank.getPowerLevel());</span>
+<span class="nc" id="L242">                        break;</span>
+                    case 'C':
+<span class="nc" id="L244">                        bomb = Bomb.bombC(this, turretEndX, turretEndY, currentTank.getTurretAngle(), tank.getPowerLevel());</span>
+<span class="nc" id="L245">                        break;</span>
+                    case 'D':
+<span class="nc" id="L247">                        bomb = Bomb.bombD(this, turretEndX, turretEndY, currentTank.getTurretAngle(), tank.getPowerLevel());</span>
+                        break;
+                }
+<span class="nc bnc" id="L250" title="All 2 branches missed.">                if (bomb != null) {</span>
+<span class="nc" id="L251">                    bombs.add(bomb);</span>
+                }
+<span class="nc" id="L253">                currentTankIndex = (currentTankIndex + 1) % tanks.size(); // increment the current tanks index</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">                for (Tank tank1 : tanks) {</span>
+<span class="nc" id="L255">                    tank1.setSpeed(0); // stop all tanks from moving</span>
+<span class="nc" id="L256">                }</span>
+            }
+        }
+<span class="nc" id="L259">        catch (IndexOutOfBoundsException e) {</span>
+<span class="nc" id="L260">            System.err.println(&quot;Tank at invalid index: &quot; + currentTankIndex);</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">            if (!tanks.isEmpty()) {</span>
+<span class="nc" id="L262">                currentTankIndex = 0; </span>
+            }
+<span class="fc" id="L264">        }</span>
+<span class="fc" id="L265">    }</span>
+
+    /**
+     * Returns the score for player A.
+     * @return Player A score.
+     */
+    public int getAScore() {
+<span class="fc" id="L272">        return AScore;</span>
+    }
+
+    /**
+     * Returns the score for player B.
+     * @return Player B score.
+     */
+    public int getBScore() {
+<span class="fc" id="L280">        return BScore;</span>
+    }
+
+    /**
+     * Returns the score for player C.
+     * @return Player C score.
+     */
+    public int getCScore() {
+<span class="fc" id="L288">        return CScore;</span>
+    }
+
+    /**
+     * Returns the score for player D.
+     * @return Player D score.
+     */
+    public int getDScore() {
+<span class="fc" id="L296">        return DScore;</span>
+    }
+
+    /**
+     * Sets the score for player A.
+     * @param score The score.
+     */
+    public void setAScore(int score) {
+<span class="fc" id="L304">        this.AScore = score;</span>
+<span class="fc" id="L305">    }</span>
+
+    /**
+     * Sets the score for player B.
+     * @param score The score.
+     */
+    public void setBScore(int score) {
+<span class="fc" id="L312">        this.BScore = score;</span>
+<span class="fc" id="L313">    }</span>
+
+    /**
+     * Sets the score for player C.
+     * @param score The score.
+     */
+    public void setCScore(int score) {
+<span class="fc" id="L320">        this.CScore = score;</span>
+<span class="fc" id="L321">    }</span>
+
+    /**
+     * Sets the score for player D.
+     * @param score The score.
+     */
+    public void setDScore(int score) {
+<span class="fc" id="L328">        this.DScore = score;</span>
+<span class="fc" id="L329">    }</span>
+
+    /**
+     * Updates the score for each tank as the game progresses.
+     * @param tankName Current tank name.
+     * @param score Score for the tank.
+     */
+    public void updateScore(char tankName, int score) {
+<span class="pc bpc" id="L337" title="4 of 5 branches missed.">        switch (tankName) {</span>
+            case 'A':
+<span class="fc" id="L339">                AScore += score;</span>
+<span class="fc" id="L340">                break;</span>
+            case 'B':
+<span class="nc" id="L342">                BScore += score;</span>
+<span class="nc" id="L343">                break;</span>
+            case 'C':
+<span class="nc" id="L345">                CScore += score;</span>
+<span class="nc" id="L346">                break;</span>
+            case 'D':
+<span class="nc" id="L348">                DScore += score;</span>
+                break;
+        }
+<span class="fc" id="L351">    }</span>
+
+    /**
+     * Receive key released signal from the keyboard.
+     *  @param event The KeyEvent object containing details of the key released.
+     */
+	@Override
+    public void keyReleased(KeyEvent event) {
+<span class="pc bpc" id="L359" title="1 of 2 branches missed.">        if(event.getKeyCode() == LEFT) {</span>
+<span class="nc" id="L360">            leftArrowPressed = false;</span>
+        }
+<span class="pc bpc" id="L362" title="1 of 2 branches missed.">        else if(event.getKeyCode() == RIGHT) {</span>
+<span class="nc" id="L363">            rightArrowPressed = false;</span>
+        }
+<span class="pc bpc" id="L365" title="1 of 2 branches missed.">        if (event.getKeyCode() == UP) {</span>
+<span class="nc" id="L366">            upPressed = false;</span>
+<span class="pc bpc" id="L367" title="1 of 2 branches missed.">        } else if (event.getKeyCode() == DOWN) {</span>
+<span class="nc" id="L368">            downPressed = false;</span>
+        }
+<span class="fc" id="L370">    }</span>
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        //TODO - powerups, like repair and extra fuel and teleport? - or maybe leave this as an extension
+
+
+<span class="nc" id="L377">    }</span>
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+<span class="nc" id="L382">    }</span>
+
+    /**
+     * Draw all elements in the game by current frame.
+     */
+	@Override
+    public void draw() {
+<span class="pc bpc" id="L389" title="1 of 2 branches missed.">        if (backgroundImage != null) {</span>
+<span class="fc" id="L390">            background(backgroundImage); // Ensure backgroundImage is not null</span>
+        }
+<span class="pc bpc" id="L392" title="1 of 2 branches missed.">        if (terrain != null) {</span>
+<span class="fc" id="L393">            terrain.displayTerrain(); // Ensure terrain is not null</span>
+        }
+        try{
+<span class="fc" id="L396">            Tank currentTank = tanks.get(currentTankIndex); // i am doing this to move the current tank (whichever tanks turn it is)</span>
+<span class="pc bpc" id="L397" title="1 of 2 branches missed.">            if (leftArrowPressed) {</span>
+<span class="nc" id="L398">                currentTank.setSpeed(-60);</span>
+            }
+<span class="pc bpc" id="L400" title="1 of 2 branches missed.">            else if (rightArrowPressed) {</span>
+<span class="nc" id="L401">                currentTank.setSpeed(60);</span>
+            }
+            else {
+<span class="fc" id="L404">                currentTank.setSpeed(0);</span>
+            }
+<span class="fc" id="L406">            currentTank.go();</span>
+<span class="pc bpc" id="L407" title="1 of 2 branches missed.">            if (upPressed) {</span>
+<span class="nc" id="L408">                currentTank.setTurretAngle(currentTank.getTurretAngle() + PApplet.radians(3)); // move the turret left</span>
+            } 
+<span class="pc bpc" id="L410" title="1 of 2 branches missed.">            else if (downPressed) {</span>
+<span class="nc" id="L411">                currentTank.setTurretAngle(currentTank.getTurretAngle() - PApplet.radians(3)); // move the turret right</span>
+            }
+            // display all the tanks in the game
+<span class="fc bfc" id="L414" title="All 2 branches covered.">            for (Tank tank : tanks) {</span>
+<span class="fc" id="L415">                tank.update();</span>
+<span class="fc" id="L416">                tank.displayTanks();</span>
+<span class="fc" id="L417">            }</span>
+
+<span class="fc bfc" id="L419" title="All 2 branches covered.">            for (Iterator&lt;Tank&gt; iterator = tanks.iterator(); iterator.hasNext();) {</span>
+<span class="fc" id="L420">                Tank tank = iterator.next();</span>
+<span class="fc" id="L421">                Bomb bomb = new Bomb(this, tank.getPosX(), tank.getPosY(), tank.getTurretAngle(), tank.getPowerLevel(), tank.getColor(), tank.getTankName());</span>
+<span class="pc bpc" id="L422" title="1 of 2 branches missed.">                if (tank.getHealth() &lt;= 0) {</span>
+<span class="nc" id="L423">                    iterator.remove(); // remove tank if health is 0</span>
+                }
+<span class="pc bpc" id="L425" title="1 of 2 branches missed.">                if (tank.getPosY() &gt; 640) {</span>
+<span class="nc" id="L426">                    iterator.remove();</span>
+<span class="nc" id="L427">                    bomb.destroyTerrain();</span>
+                }
+<span class="fc" id="L429">            }</span>
+            
+<span class="pc bpc" id="L431" title="1 of 2 branches missed.">            for (Iterator&lt;Bomb&gt; iterator = bombs.iterator(); iterator.hasNext(); ) {</span>
+<span class="nc" id="L432">                Bomb bomb = iterator.next();</span>
+<span class="nc" id="L433">                bomb.update();</span>
+<span class="nc" id="L434">                bomb.displayBomb();</span>
+<span class="nc bnc" id="L435" title="All 2 branches missed.">                if (bomb.outside()) {</span>
+<span class="nc" id="L436">                    iterator.remove(); // remove the bomb if it goes outside the game</span>
+                }
+<span class="nc bnc" id="L438" title="All 2 branches missed.">                else if (bomb.getY() &gt;= Terrain.heights.get((int) bomb.getX())) { // destroy the terrain when the bomb hits it</span>
+<span class="nc" id="L439">                    bomb.displayExplosion();</span>
+<span class="nc" id="L440">                    bomb.destroyTerrain();</span>
+<span class="nc" id="L441">                    bomb.destroyTank(tanks);</span>
+<span class="nc" id="L442">                    iterator.remove();</span>
+                }
+<span class="nc" id="L444">            }</span>
+            
+            // display all the game stats
+<span class="fc" id="L447">            hud.drawArrow(currentTank);</span>
+<span class="fc" id="L448">            hud.whoIsDaPlayer(currentTank);</span>
+<span class="fc" id="L449">            hud.displayFuel(currentTank);</span>
+<span class="fc" id="L450">            hud.displayChuteIcon(currentTank);</span>
+<span class="fc" id="L451">            hud.displayHealth(currentTank); </span>
+<span class="fc" id="L452">            hud.displayLeaderboard(this);</span>
+
+            // display the windspeed
+<span class="fc" id="L455">            wind.displayWind();</span>
+        }
+<span class="fc" id="L457">        catch (IndexOutOfBoundsException e) {</span>
+<span class="fc" id="L458">            System.err.println(&quot;Tank at invalid index (draw function): &quot; + currentTankIndex);</span>
+<span class="fc" id="L459">        }</span>
+
+<span class="pc bpc" id="L461" title="1 of 2 branches missed.">        if (tanks.size() == 1) {</span>
+<span class="nc" id="L462">            currentLevel++;</span>
+<span class="nc bnc" id="L463" title="All 2 branches missed.">            if (currentLevel &lt;= maxLevel) {</span>
+<span class="nc" id="L464">                loadLevel(currentLevel);</span>
+            } 
+            else {
+<span class="nc" id="L467">                hud.displayTheEnd();</span>
+            }
+        }
+<span class="fc" id="L470">    }</span>
+
+    /**
+     * Main function that serves as the entry point of the application.
+     * @param args Command-line arguments.
+     */
+    public static void main(String[] args) {
+<span class="nc" id="L477">        PApplet.main(&quot;Tanks.App&quot;);</span>
+<span class="nc" id="L478">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

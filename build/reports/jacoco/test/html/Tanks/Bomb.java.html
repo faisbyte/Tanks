@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Bomb.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tanks_scaffold</a> &gt; <a href="index.source.html" class="el_package">Tanks</a> &gt; <span class="el_source">Bomb.java</span></div><h1>Bomb.java</h1><pre class="source lang-java linenums">package Tanks;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import processing.core.PApplet;
+
+/**
+ * Represents a bomb in the game, managing its physics, display, and interactions with the terrain and tanks.
+ */
+public class Bomb {
+
+    private PApplet app; // Reference to the Processing applet for drawing and access to game constants
+    private float x; // X-coordinate of the bomb's current position
+    private float y; // Y-coordinate of the bomb's current position
+    private float xvelo; // Horizontal velocity of the bomb
+    private float yvelo; // Vertical velocity of the bomb, affected by gravity
+    private static final float g = 0.1f; // Gravity constant
+    private int color; // Color of the bomb
+    private char firingTank; // Identifier of the tank that fired the bomb
+    private int RED; // Red color constant
+    private int ORANGE; // Orange color constant
+    private int YELLOW; // Yellow color constant
+    
+    /**
+     * Constructs a Bomb object with specified initial settings.
+     * @param app The main Processing applet instance for drawing and handling game logic.
+     * @param x Initial x-coordinate of the bomb.
+     * @param y Initial y-coordinate of the bomb.
+     * @param angle The firing angle of the bomb.
+     * @param powerLevel The power level affecting the bomb's initial speed.
+     * @param colour The color of the bomb.
+     * @param c The character identifier of the firing tank.
+     */
+<span class="fc" id="L34">    public Bomb (PApplet app, float x, float y, float angle, float powerLevel, int colour, char c) {</span>
+<span class="fc" id="L35">        this.app = app;</span>
+<span class="fc" id="L36">        this.x = x;</span>
+<span class="fc" id="L37">        this.y = y;</span>
+<span class="fc" id="L38">        float u = 1 + 8 * (powerLevel / 100); // b/w 1 and 9 pixels per frame</span>
+<span class="fc" id="L39">        this.xvelo = u * PApplet.cos(angle);</span>
+<span class="fc" id="L40">        this.yvelo = -u * PApplet.sin(angle);</span>
+<span class="fc" id="L41">        this.color = colour;</span>
+<span class="fc" id="L42">        this.RED = app.color(255, 0, 0);</span>
+<span class="fc" id="L43">        this.ORANGE = app.color(255, 165, 0);</span>
+<span class="fc" id="L44">        this.YELLOW = app.color(255, 255, 0);</span>
+<span class="fc" id="L45">        this.firingTank = c;</span>
+<span class="fc" id="L46">    }</span>
+
+    /**
+     * Returns the identifier of the tank that fired the bomb.
+     * @return The firing tank's identifier.
+     */
+    public char getFiringTank() { // returns the tank which fired the bomb
+<span class="fc" id="L53">        return firingTank;</span>
+    }
+
+    /**
+     * Updates the position and velocity of the bomb according to physics calculations.
+     */
+    public void update() {
+        // update pos based on velocity
+<span class="fc" id="L61">        x += xvelo;</span>
+<span class="fc" id="L62">        y += yvelo;</span>
+<span class="fc" id="L63">        yvelo += g; // apply gravity</span>
+<span class="fc" id="L64">        xvelo += App.wind.getSpeed() * 0.03 / app.frameRate; // add wind</span>
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * Displays the bomb on the screen.
+     */
+    public void displayBomb () {
+<span class="fc" id="L71">        app.noStroke();</span>
+<span class="fc" id="L72">        app.fill(color);</span>
+<span class="fc" id="L73">        app.ellipse(x, y, 10, 10);</span>
+<span class="fc" id="L74">    }</span>
+
+    /**
+     * Displays the explosion effects when the bomb detonates.
+     */
+    public void displayExplosion() { // display the explosion on the screen
+<span class="fc" id="L80">        float explosionRing = 30;</span>
+<span class="fc" id="L81">        float time = 0.2f * app.frameRate; // 0.2 seconds</span>
+<span class="fc" id="L82">        float currentFrame = app.frameCount % time; // current frame in the bomb blasting</span>
+<span class="fc" id="L83">        float red = PApplet.map(currentFrame, 0, time, 0, explosionRing);</span>
+<span class="fc" id="L84">        float orange = PApplet.map(currentFrame, 0, time, 0, explosionRing * 0.5f);</span>
+<span class="fc" id="L85">        float yellow = PApplet.map(currentFrame, 0, time, 0, explosionRing * 0.2f);</span>
+<span class="fc" id="L86">        app.noStroke();</span>
+<span class="fc" id="L87">        app.fill(RED);</span>
+<span class="fc" id="L88">        app.ellipse(x, y, red * 2, red * 2);</span>
+<span class="fc" id="L89">        app.fill(ORANGE);</span>
+<span class="fc" id="L90">        app.ellipse(x, y, orange * 2, orange * 2);</span>
+<span class="fc" id="L91">        app.fill(YELLOW);</span>
+<span class="fc" id="L92">        app.ellipse(x, y, yellow * 2, yellow * 2);</span>
+<span class="fc" id="L93">    }</span>
+
+    /**
+     * Destroys the terrain where the bomb impacts, modifying the terrain heights.
+     */
+    public void destroyTerrain() { // destroy the terrain
+<span class="fc" id="L99">        final float r = 30f;</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        for (int i = (int) Math.max(0, x - (int) r); i &lt; Math.min(Terrain.heights.size(), x + (int) r); i++) {</span>
+<span class="fc" id="L101">          float d = Math.abs(i - x);</span>
+<span class="fc" id="L102">          float semiCircleHeight = (float) Math.sqrt(Math.max(0, r * r - d * d));</span>
+<span class="pc bpc" id="L103" title="3 of 4 branches missed.">          if (Terrain.heights.get(i) &lt; y + semiCircleHeight &amp;&amp; Terrain.heights.get(i) &gt; y - semiCircleHeight) {</span>
+<span class="nc" id="L104">            Terrain.heights.set(i, y + semiCircleHeight);</span>
+            }
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">          else if (Terrain.heights.get(i) &lt; y - semiCircleHeight) {</span>
+<span class="nc" id="L107">            Terrain.heights.set(i, Terrain.heights.get(i) + 2 * semiCircleHeight);</span>
+<span class="nc" id="L108">            Terrain.heights.set(i, Math.min(Terrain.heights.get(i), y + semiCircleHeight));</span>
+            }
+        }
+<span class="fc" id="L111">    }</span>
+
+    /**
+     * Checks if the bomb has gone outside the boundaries of the game area.
+     * @return True if the bomb is outside the game area, false otherwise.
+     */
+    boolean outside() {
+<span class="nc bnc" id="L118" title="All 6 branches missed.">        return x &lt; 0 || x &gt; App.WIDTH || y &gt; App.HEIGHT; // check if the bomb went outside the screen</span>
+    }
+
+     /**
+     * Constructs a Bomb for tank A.
+     * @param app The main Processing applet instance for drawing and handling game logic.
+     * @param x Initial x-coordinate of the bomb.
+     * @param y Initial y-coordinate of the bomb.
+     * @param angle The firing angle of the bomb.
+     * @param power The power of the bomb being fired.
+     */
+    public static Bomb bombA(PApplet app, float x, float y, float angle, int power) {
+<span class="nc" id="L130">        return new Bomb(app, x, y, angle, power, app.color(0, 0, 255), 'A'); // blue</span>
+    }
+
+    /**
+     * Constructs a Bomb for tank B.
+     * @param app The main Processing applet instance for drawing and handling game logic.
+     * @param x Initial x-coordinate of the bomb.
+     * @param y Initial y-coordinate of the bomb.
+     * @param angle The firing angle of the bomb.
+     * @param power The power of the bomb being fired.
+     */
+    public static Bomb bombB(PApplet app, float x, float y, float angle, int power) {
+<span class="nc" id="L142">        return new Bomb(app, x, y, angle, power, app.color(255, 0, 0), 'B'); // red</span>
+    }
+
+    /**
+     * Constructs a Bomb for tank C.
+     * @param app The main Processing applet instance for drawing and handling game logic.
+     * @param x Initial x-coordinate of the bomb.
+     * @param y Initial y-coordinate of the bomb.
+     * @param angle The firing angle of the bomb.
+     * @param power The power of the bomb being fired.
+     */
+    public static Bomb bombC(PApplet app, float x, float y, float angle, int power) {
+<span class="nc" id="L154">        return new Bomb(app, x, y, angle, power, app.color(0, 255, 255), 'C'); // cyan</span>
+    }
+
+    /**
+     * Constructs a Bomb for tank D.
+     * @param app The main Processing applet instance for drawing and handling game logic.
+     * @param x Initial x-coordinate of the bomb.
+     * @param y Initial y-coordinate of the bomb.
+     * @param angle The firing angle of the bomb.
+     * @param power The power of the bomb being fired.
+     */
+    public static Bomb bombD(PApplet app, float x, float y, float angle, int power) {
+<span class="nc" id="L166">        return new Bomb(app, x, y, angle, power, app.color(255, 255, 0), 'D'); // yellow</span>
+    }
+
+    /**
+     * Gets the current x-coordinate of the bomb.
+     * @return Current x-coordinate.
+     */
+    public float getX() {
+<span class="fc" id="L174">        return this.x;</span>
+    }
+
+    /**
+     * Gets the current y-coordinate of the bomb.
+     * @return Current y-coordinate.
+     */
+    public float getY() {
+<span class="fc" id="L182">        return this.y;</span>
+    }
+
+    /**
+     * Handles damage to tanks within the explosion radius and removes destroyed tanks.
+     * @param tanks The list of tanks to check and update based on the explosion.
+     */
+    public void destroyTank(ArrayList&lt;Tank&gt; tanks) { // remove the tank from the game if it falls below the map or health is 0
+<span class="nc" id="L190">        float radius = 30f;</span>
+<span class="nc" id="L191">        Iterator&lt;Tank&gt; iterator = tanks.iterator();</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">        while (iterator.hasNext()) {</span>
+<span class="nc" id="L193">            Tank tank = iterator.next();</span>
+<span class="nc" id="L194">            float dist = PApplet.dist(x, y, tank.getPosX(), tank.getPosY());</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">            if (dist &lt; radius) {</span>
+<span class="nc" id="L196">                int damage = (int) ((1 - (dist / radius)) * 60);</span>
+<span class="nc" id="L197">                int oldHealth = tank.getHealth();</span>
+<span class="nc" id="L198">                tank.damage(damage);</span>
+<span class="nc" id="L199">                int healthLost = oldHealth - tank.getHealth();</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">                if (firingTank != tank.getTankName()) { // only update score if the damaged tank is not the firing tank</span>
+<span class="nc" id="L201">                    ((App) app).updateScore(firingTank, healthLost);</span>
+                }
+<span class="nc bnc" id="L203" title="All 2 branches missed.">                if (tank.getHealth() &lt;= 0) { // destroy the tank with an explostion radius of 15</span>
+<span class="nc" id="L204">                    final float r = 15f;</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">                    for (int i = (int) Math.max(0, x - (int) r); i &lt; Math.min(Terrain.heights.size(), x + (int) r); i++) {</span>
+<span class="nc" id="L206">                    float d = Math.abs(i - x);</span>
+<span class="nc" id="L207">                    float semiCircleHeight = (float) Math.sqrt(Math.max(0, r * r - d * d));</span>
+<span class="nc bnc" id="L208" title="All 4 branches missed.">                    if (Terrain.heights.get(i) &lt; y + semiCircleHeight &amp;&amp; Terrain.heights.get(i) &gt; y - semiCircleHeight) {</span>
+<span class="nc" id="L209">                        Terrain.heights.set(i, y + semiCircleHeight);</span>
+                        }
+<span class="nc bnc" id="L211" title="All 2 branches missed.">                    else if (Terrain.heights.get(i) &lt; y - semiCircleHeight) {</span>
+<span class="nc" id="L212">                        Terrain.heights.set(i, Terrain.heights.get(i) + 2 * semiCircleHeight);</span>
+<span class="nc" id="L213">                        Terrain.heights.set(i, Math.min(Terrain.heights.get(i), y + semiCircleHeight));</span>
+                        }
+                    }
+<span class="nc" id="L216">                    iterator.remove(); // remove tank </span>
+                }
+            }
+<span class="nc" id="L219">        }</span>
+<span class="nc" id="L220">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

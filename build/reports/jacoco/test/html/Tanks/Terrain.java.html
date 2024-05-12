@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Terrain.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tanks_scaffold</a> &gt; <a href="index.source.html" class="el_package">Tanks</a> &gt; <span class="el_source">Terrain.java</span></div><h1>Terrain.java</h1><pre class="source lang-java linenums">package Tanks;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+import java.util.ArrayList;
+
+/**
+ * Represents the terrain in the tank game, including the graphical representation,
+ * terrain obstacles, and specific locations for trees and tanks.
+ * This class manages the loading and rendering of different terrains based on the level.
+ */
+public class Terrain {
+
+    private PApplet parent; // The parent PApplet instance for drawing
+    private PImage treeImage; // Image of the tree used in the terrain
+    private App app; // Reference to the main application
+    private char[][] terrainGrid; // Grid representing the terrain map
+
+    // Static lists to store dynamic elements and their positions on the terrain
+<span class="fc" id="L20">    public static ArrayList&lt;Float&gt; heights = new ArrayList&lt;&gt;(); // ArrayList storing the heights of characters read from the text file.</span>
+<span class="fc" id="L21">    public static ArrayList&lt;Float&gt; treeX = new ArrayList&lt;&gt;(); // ArrayList storing the X co ordinates of trees read from the text file.</span>
+<span class="fc" id="L22">    public static ArrayList&lt;Integer&gt; tankAX = new ArrayList&lt;&gt;(); // ArrayList storing the X co ordinates for tank A.</span>
+<span class="fc" id="L23">    public static ArrayList&lt;Integer&gt; tankAY = new ArrayList&lt;&gt;(); // ArrayList storing the Y co ordinates for tank A.</span>
+<span class="fc" id="L24">    public static ArrayList&lt;Integer&gt; tankBX = new ArrayList&lt;&gt;(); // ArrayList storing the X co ordinates for tank B.</span>
+<span class="fc" id="L25">    public static ArrayList&lt;Integer&gt; tankBY = new ArrayList&lt;&gt;(); // ArrayList storing the Y co ordinates for tank B.</span>
+<span class="fc" id="L26">    public static ArrayList&lt;Integer&gt; tankCX = new ArrayList&lt;&gt;(); // ArrayList storing the X co ordinates for tank C.</span>
+<span class="fc" id="L27">    public static ArrayList&lt;Integer&gt; tankCY = new ArrayList&lt;&gt;(); // ArrayList storing the Y co ordinates for tank C.</span>
+<span class="fc" id="L28">    public static ArrayList&lt;Integer&gt; tankDX = new ArrayList&lt;&gt;(); // ArrayList storing the X co ordinates for tank D.</span>
+<span class="fc" id="L29">    public static ArrayList&lt;Integer&gt; tankDY = new ArrayList&lt;&gt;(); // ArrayList storing the Y co ordinates for tank D.</span>
+
+    /**
+     * Constructs a Terrain object, loads tree images based on the current level.
+     * @param parent The parent PApplet instance for drawing on the canvas.
+     * @param app The main application object for accessing game settings and level information.
+     */
+<span class="fc" id="L36">    public Terrain(PApplet parent, App app) {</span>
+<span class="fc" id="L37">        this.parent = parent;</span>
+<span class="fc" id="L38">        this.app = app;</span>
+<span class="fc" id="L39">        loadTreeImage();</span>
+<span class="fc" id="L40">    }</span>
+
+     /**
+     * Calculates and returns the y-coordinate for a given x-coordinate, interpolating if necessary.
+     * @param x The x-coordinate for which to find the corresponding y-coordinate.
+     * @return The interpolated y-coordinate based on the current terrain heights.
+     */
+    public static float getYc(float x) {
+<span class="fc" id="L48">        int index = Math.round(x);</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (index &lt; 0) {</span>
+<span class="fc" id="L50">            index = 0;</span>
+        }
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (index &gt;= heights.size()) { // check if index is within the bounds of the list</span>
+<span class="fc" id="L53">            index = heights.size() - 1;</span>
+        }
+<span class="fc" id="L55">        return heights.get(index); // return the y-coordinate from the heights list</span>
+    }
+
+    /**
+     * Loads the tree image based on the current level.
+     */
+    public void loadTreeImage() { // display the correct tree based on the map
+        String treeImagePath;
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (app.getCurrentLevel() == 3) {</span>
+<span class="fc" id="L64">            treeImagePath = &quot;src/main/resources/Tanks/tree1.png&quot;;</span>
+        } 
+        else {
+<span class="fc" id="L67">            treeImagePath = &quot;src/main/resources/Tanks/tree2.png&quot;;</span>
+        }
+<span class="fc" id="L69">        this.treeImage = parent.loadImage(treeImagePath);</span>
+<span class="fc" id="L70">    }</span>
+
+    /**
+     * Loads and processes terrain data from a file.
+     * @param levelPath The file path to the terrain data for the level.
+     */
+    public void loadTerrain(String levelPath) {
+<span class="fc" id="L77">        String[] lines = parent.loadStrings(levelPath);</span>
+<span class="fc" id="L78">        terrainGrid = new char[App.BOARD_WIDTH][lines.length]; // fill 2d array with dimensions</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        for (int j = 0; j &lt; 27; j++) { // loop through columns first</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">            for (int i = 0; i &lt; lines.length; i++) { // loop through rows now after columns</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">                if (j &lt; lines[i].length()) { // check if the current column exists in this row</span>
+<span class="fc" id="L82">                    terrainGrid[j][i] = lines[i].charAt(j); // col by row access</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">                    if (terrainGrid[j][i] == 'X') {</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">                        for (int k = 0; k &lt; 32; k++) {</span>
+<span class="fc" id="L85">                            heights.add((float) i * App.CELLHEIGHT); // add heights to the list based on row position</span>
+                        }
+                    }
+<span class="fc bfc" id="L88" title="All 2 branches covered.">                    else if (terrainGrid[j][i] == 'T') {</span>
+<span class="fc" id="L89">                        treeX.add((float) j * App.CELLSIZE);</span>
+                    }
+<span class="fc bfc" id="L91" title="All 8 branches covered.">                    else if (terrainGrid[j][i] == 'A' || terrainGrid[j][i] == 'B' || terrainGrid[j][i] == 'C' || terrainGrid[j][i] == 'D') {</span>
+<span class="pc bpc" id="L92" title="1 of 5 branches missed.">                        switch (terrainGrid[j][i]) {</span>
+                            case 'A':
+<span class="fc" id="L94">                                tankAX.add(j);</span>
+<span class="fc" id="L95">                                tankAY.add(i);</span>
+<span class="fc" id="L96">                                break;</span>
+                            case 'B':
+<span class="fc" id="L98">                                tankBX.add(j);</span>
+<span class="fc" id="L99">                                tankBY.add(i);</span>
+<span class="fc" id="L100">                                break;</span>
+                            case 'C':
+<span class="fc" id="L102">                                tankCX.add(j);</span>
+<span class="fc" id="L103">                                tankCY.add(i);</span>
+<span class="fc" id="L104">                                break;</span>
+                            case 'D':
+<span class="fc" id="L106">                                tankDX.add(j);</span>
+<span class="fc" id="L107">                                tankDY.add(i);</span>
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+<span class="fc" id="L114">    }</span>
+    
+    /**
+     * Applies a moving average filter to the terrain heights to smooth out the graphical representation.
+     * @param heights The list of height values for each point on the terrain.
+     */
+    public static void applyMovingAverage(ArrayList&lt;Float&gt; heights) { // smooth the terrain
+<span class="fc" id="L121">        ArrayList&lt;Float&gt; transformed = new ArrayList&lt;&gt;(heights.size());</span>
+<span class="fc" id="L122">        int window = 32;</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        for (int i = 0; i &lt; heights.size(); i++) {</span>
+<span class="fc" id="L124">            float sum = 0;</span>
+<span class="fc" id="L125">            int count = 0;</span>
+            try{
+<span class="fc bfc" id="L127" title="All 2 branches covered.">                for (int j = i; j &lt; Math.min(heights.size(), i + window); j++) { // calculate sum of next 32 elements</span>
+<span class="fc" id="L128">                    sum += heights.get(j);</span>
+<span class="fc" id="L129">                    count++;</span>
+                }
+            }
+<span class="fc" id="L132">            catch (NullPointerException e) {</span>
+
+<span class="fc" id="L134">            }</span>
+<span class="fc" id="L135">            transformed.add(sum / count); // add avg to list</span>
+        }
+<span class="fc" id="L137">        heights.clear();</span>
+<span class="fc" id="L138">        heights.addAll(transformed); // update the main list (i suck at for loop)</span>
+<span class="fc" id="L139">    }</span>
+
+    /**
+     * Displays the terrain based on the currently loaded heights and tree positions.
+     * Colors and details are adjusted based on the current game level.
+     */
+    public void displayTerrain() {
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (app.getCurrentLevel() == 1) {</span>
+<span class="fc" id="L147">            parent.fill(255); // white colour</span>
+        }
+<span class="fc bfc" id="L149" title="All 2 branches covered.">        else if (app.getCurrentLevel() == 2) {</span>
+<span class="fc" id="L150">            parent.fill(234,221,181); // beige</span>
+        }
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        else if (app.getCurrentLevel() == 3) {</span>
+<span class="fc" id="L153">            parent.fill(120,171,0); // green</span>
+        }
+<span class="fc" id="L155">        parent.noStroke(); // no black lines</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        for (int x = 0; x &lt; heights.size(); x++) {</span>
+<span class="fc" id="L157">            float y = heights.get(x);</span>
+<span class="fc" id="L158">            parent.rect(x, y, 1, App.HEIGHT - y);</span>
+        }
+<span class="fc bfc" id="L160" title="All 2 branches covered.">        for (float x : treeX) {</span>
+<span class="fc" id="L161">            parent.image(treeImage, x, heights.get((int) x + 15) - 32, App.CELLSIZE, App.CELLHEIGHT);</span>
+<span class="fc" id="L162">        }</span>
+<span class="fc" id="L163">    }</span>
+    
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

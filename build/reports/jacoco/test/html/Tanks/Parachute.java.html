@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Parachute.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tanks_scaffold</a> &gt; <a href="index.source.html" class="el_package">Tanks</a> &gt; <span class="el_source">Parachute.java</span></div><h1>Parachute.java</h1><pre class="source lang-java linenums">package Tanks;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+
+/**
+ * Represents a parachute for a tank, managing deployment and effects on the tank during falls.
+ */
+public class Parachute {
+    
+    private Tank tank; // The tank associated with this parachute
+    private PApplet app; // Reference to the Processing applet for drawing and access to resources
+    private PImage chute; // Image of the parachute
+    public boolean isDeployed; // Flag to check if the parachute is currently deployed
+    private int remainingParachutes; // Number of parachutes left for deployment
+    private static final int descentRateWithParachute = 60; // Descent rate in pixels per second with parachute
+    private static final int descentRateWithoutParachute = 120; // Descent rate in pixels per second without parachute
+    private static final int damagePerPixel = 1; // Damage taken per pixel fallen without parachute
+
+    /**
+     * Constructs a Parachute object, initializing it with a tank, the application context, and loading the parachute image.
+     * @param tank The tank associated with this parachute.
+     * @param app The main Processing applet instance used for drawing and handling game logic.
+     */
+<span class="fc" id="L25">    public Parachute(Tank tank, PApplet app) {</span>
+<span class="fc" id="L26">        this.tank = tank;</span>
+<span class="fc" id="L27">        this.app = app;</span>
+<span class="fc" id="L28">        this.isDeployed = false;</span>
+<span class="fc" id="L29">        this.remainingParachutes = 3;</span>
+<span class="fc" id="L30">        this.chute = app.loadImage(&quot;src/main/resources/Tanks/parachute.png&quot;);</span>
+<span class="fc" id="L31">    }</span>
+
+     /**
+     * Sets the number of parachutes available for deployment.
+     * @param p The number of parachutes to set.
+     */
+    public void setParachutes(int p) {
+<span class="fc" id="L38">        this.remainingParachutes = p;</span>
+<span class="fc" id="L39">    }</span>
+
+    /**
+     * Updates the status of the parachute during the game loop, handling deployment and free fall effects.
+     */
+    public void updateParachute() {
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        if (isTankInMidair()) {</span>
+<span class="nc bnc" id="L46" title="All 4 branches missed.">            if (remainingParachutes &gt; 0 &amp;&amp; !isDeployed) {</span>
+<span class="nc" id="L47">                deployParachute();</span>
+            } else {
+<span class="nc" id="L49">                handleFreeFall();</span>
+            }
+        } else {
+<span class="nc" id="L52">            resetParachute();</span>
+        }
+<span class="nc" id="L54">    }</span>
+
+    /**
+     * Checks if the associated tank is currently in midair above the terrain.
+     * @return true if the tank is in midair, false otherwise.
+     */
+    public boolean isTankInMidair() {
+<span class="nc" id="L61">        float terrainHeight = tank.getTerrain().getYc(tank.getPosX() + 15);</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        return tank.getPosY() &gt; terrainHeight;</span>
+    }
+
+    /**
+     * Deploys a parachute if available, reducing the descent rate of the tank and decrementing the count of remaining parachutes.
+     */
+    public void deployParachute() {
+<span class="fc" id="L69">        isDeployed = true;</span>
+<span class="fc" id="L70">        remainingParachutes--;</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (remainingParachutes &lt; 0) {</span>
+<span class="fc" id="L72">            remainingParachutes = 0;</span>
+        }
+<span class="fc" id="L74">        tank.setDescentRate(descentRateWithParachute);</span>
+<span class="fc" id="L75">        System.out.println(remainingParachutes);</span>
+<span class="fc" id="L76">    }</span>
+
+     /**
+     * Handles the tank's free fall when no parachute is deployed, applying damage based on the fall speed.
+     */
+    public void handleFreeFall() {
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (!isDeployed) {</span>
+<span class="nc" id="L83">            tank.setDescentRate(descentRateWithoutParachute);</span>
+<span class="nc" id="L84">            tank.damage(damagePerPixel * (descentRateWithoutParachute / App.FPS));</span>
+        }
+<span class="nc" id="L86">    }</span>
+
+    /**
+     * Resets the parachute when the tank is no longer in midair, preparing it for potential redeployment.
+     */
+    public void resetParachute() {
+<span class="nc" id="L92">        isDeployed = false;</span>
+<span class="nc" id="L93">        tank.setDescentRate(0);</span>
+<span class="nc" id="L94">    }</span>
+
+    /**
+     * Displays the parachute image above the tank when deployed.
+     */
+    public void displayParachute() {
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">        if (isDeployed) {</span>
+<span class="fc" id="L101">            app.image(chute, tank.getPosX() - 15, tank.getPosY() - 60); // Adjust positioning as necessary</span>
+        }
+<span class="fc" id="L103">    }</span>
+
+    /**
+     * Returns the deployment status of the parachute.
+     * @return true if the parachute is deployed, false otherwise.
+     */
+    public boolean isDeployed() {
+<span class="fc" id="L110">        return isDeployed;</span>
+    }
+
+    /**
+     * Returns the number of remaining parachutes.
+     * @return The number of parachutes available for deployment.
+     */
+    public int getRemainingParachutes() {
+<span class="fc" id="L118">        return remainingParachutes;</span>
+    }
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

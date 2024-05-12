@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Wind.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tanks_scaffold</a> &gt; <a href="index.source.html" class="el_package">Tanks</a> &gt; <span class="el_source">Wind.java</span></div><h1>Wind.java</h1><pre class="source lang-java linenums">package Tanks;
+
+import processing.core.PApplet;
+import processing.core.PImage;
+
+/**
+ * Represents the wind in the game, managing its speed and the display of wind indicators.
+ */
+public class Wind {
+
+    private PApplet app; // Reference to the Processing applet for drawing and access to game resources
+    public int windSpeed; // Current wind speed affecting the game elements
+    private PImage icon; // Icon for displaying positive wind direction
+    private PImage icon2; // Icon for displaying negative wind direction
+    private static final int fastWind = 35; // Maximum positive wind speed
+    private static final int slowWind = -35; // Maximum negative wind speed
+    private static final int fastChange = 5; // Maximum increase per wind change
+    private static final int slowChange = -5; // Maximum decrease per wind change
+
+    /**
+     * Constructs a Wind object with a random initial wind speed and loads related images.
+     * @param app The main Processing applet instance for drawing and handling game logic.
+     */
+<span class="fc" id="L24">    public Wind(PApplet app) {</span>
+<span class="fc" id="L25">        this.app = app;</span>
+<span class="fc" id="L26">        this.icon = app.loadImage(&quot;src/main/resources/Tanks/wind.png&quot;);</span>
+<span class="fc" id="L27">        this.icon2 = app.loadImage(&quot;src/main/resources/Tanks/wind-1.png&quot;);</span>
+<span class="fc" id="L28">        this.windSpeed = (int) app.random(slowWind, fastWind);</span>
+<span class="fc" id="L29">    }</span>
+
+    /**
+     * Updates the wind speed by a random amount within the defined change limits and constrains it within the maximum and minimum speeds.
+     */
+    public void updateWind() {
+<span class="fc" id="L35">        this.windSpeed += app.random(slowChange, fastChange);</span>
+<span class="fc" id="L36">        this.windSpeed = App.constrain(this.windSpeed, slowWind, fastWind);</span>
+<span class="fc" id="L37">    }</span>
+
+    /**
+     * Returns the current wind speed.
+     * @return Current wind speed as a float.
+     */
+    public float getSpeed() { // return wind speed
+<span class="fc" id="L44">        return this.windSpeed;</span>
+    }
+
+    /**
+     * Displays the wind indicator icon based on the current wind speed direction and the actual speed value on the screen.
+     */
+    public void displayWind() { // displays the correct wind icon based on the direction of wind
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (windSpeed &lt; 0) {</span>
+<span class="fc" id="L52">            app.image(icon2, 770, 10, 50, 50);</span>
+        }
+        else {
+<span class="fc" id="L55">            app.image(icon, 770, 10, 50, 50);</span>
+        }
+        //updateWind();
+<span class="fc" id="L58">        app.fill(0);</span>
+<span class="fc" id="L59">        app.textSize(15);</span>
+<span class="fc" id="L60">        int ws = windSpeed;</span>
+<span class="fc" id="L61">        app.text(ws, 830, 35);</span>
+<span class="fc" id="L62">    }</span>
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
