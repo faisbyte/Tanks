@@ -46,11 +46,25 @@ public class Bomb {
 <span class="fc" id="L46">    }</span>
 
     /**
+     * Sets the X co ordinate for the bomb. (Used for testing purposes only)
+     */
+    public void setX(float X) {
+<span class="nc" id="L52">        this.x = X;</span>
+<span class="nc" id="L53">    }</span>
+
+    /**
+     * Sets the Y co ordinate for the bomb. (Used for testing purposes only)
+     */
+    public void setY(float Y) {
+<span class="nc" id="L59">        this.y = Y;</span>
+<span class="nc" id="L60">    }</span>
+
+    /**
      * Returns the identifier of the tank that fired the bomb.
      * @return The firing tank's identifier.
      */
     public char getFiringTank() { // returns the tank which fired the bomb
-<span class="fc" id="L53">        return firingTank;</span>
+<span class="nc" id="L67">        return firingTank;</span>
     }
 
     /**
@@ -58,64 +72,64 @@ public class Bomb {
      */
     public void update() {
         // update pos based on velocity
-<span class="fc" id="L61">        x += xvelo;</span>
-<span class="fc" id="L62">        y += yvelo;</span>
-<span class="fc" id="L63">        yvelo += g; // apply gravity</span>
-<span class="fc" id="L64">        xvelo += App.wind.getSpeed() * 0.03 / app.frameRate; // add wind</span>
-<span class="fc" id="L65">    }</span>
+<span class="nc" id="L75">        x += xvelo;</span>
+<span class="nc" id="L76">        y += yvelo;</span>
+<span class="nc" id="L77">        yvelo += g; // apply gravity</span>
+<span class="nc" id="L78">        xvelo += App.wind.getSpeed() * 0.03 / app.frameRate; // add wind</span>
+<span class="nc" id="L79">    }</span>
 
     /**
      * Displays the bomb on the screen.
      */
     public void displayBomb () {
-<span class="fc" id="L71">        app.noStroke();</span>
-<span class="fc" id="L72">        app.fill(color);</span>
-<span class="fc" id="L73">        app.ellipse(x, y, 10, 10);</span>
-<span class="fc" id="L74">    }</span>
+<span class="nc" id="L85">        app.noStroke();</span>
+<span class="nc" id="L86">        app.fill(color);</span>
+<span class="nc" id="L87">        app.ellipse(x, y, 10, 10);</span>
+<span class="nc" id="L88">    }</span>
 
     /**
      * Displays the explosion effects when the bomb detonates.
      */
     public void displayExplosion() { // display the explosion on the screen
-<span class="fc" id="L80">        float explosionRing = 30;</span>
-<span class="fc" id="L81">        float time = 0.2f * app.frameRate; // 0.2 seconds</span>
-<span class="fc" id="L82">        float currentFrame = app.frameCount % time; // current frame in the bomb blasting</span>
-<span class="fc" id="L83">        float red = PApplet.map(currentFrame, 0, time, 0, explosionRing);</span>
-<span class="fc" id="L84">        float orange = PApplet.map(currentFrame, 0, time, 0, explosionRing * 0.5f);</span>
-<span class="fc" id="L85">        float yellow = PApplet.map(currentFrame, 0, time, 0, explosionRing * 0.2f);</span>
-<span class="fc" id="L86">        app.noStroke();</span>
-<span class="fc" id="L87">        app.fill(RED);</span>
-<span class="fc" id="L88">        app.ellipse(x, y, red * 2, red * 2);</span>
-<span class="fc" id="L89">        app.fill(ORANGE);</span>
-<span class="fc" id="L90">        app.ellipse(x, y, orange * 2, orange * 2);</span>
-<span class="fc" id="L91">        app.fill(YELLOW);</span>
-<span class="fc" id="L92">        app.ellipse(x, y, yellow * 2, yellow * 2);</span>
-<span class="fc" id="L93">    }</span>
+<span class="nc" id="L94">        float explosionRing = 30;</span>
+<span class="nc" id="L95">        float time = 0.2f * app.frameRate; // 0.2 seconds</span>
+<span class="nc" id="L96">        float currentFrame = app.frameCount % time; // current frame in the bomb blasting</span>
+<span class="nc" id="L97">        float red = PApplet.map(currentFrame, 0, time, 0, explosionRing);</span>
+<span class="nc" id="L98">        float orange = PApplet.map(currentFrame, 0, time, 0, explosionRing * 0.5f);</span>
+<span class="nc" id="L99">        float yellow = PApplet.map(currentFrame, 0, time, 0, explosionRing * 0.2f);</span>
+<span class="nc" id="L100">        app.noStroke();</span>
+<span class="nc" id="L101">        app.fill(RED);</span>
+<span class="nc" id="L102">        app.ellipse(x, y, red * 2, red * 2);</span>
+<span class="nc" id="L103">        app.fill(ORANGE);</span>
+<span class="nc" id="L104">        app.ellipse(x, y, orange * 2, orange * 2);</span>
+<span class="nc" id="L105">        app.fill(YELLOW);</span>
+<span class="nc" id="L106">        app.ellipse(x, y, yellow * 2, yellow * 2);</span>
+<span class="nc" id="L107">    }</span>
 
     /**
      * Destroys the terrain where the bomb impacts, modifying the terrain heights.
      */
     public void destroyTerrain() { // destroy the terrain
-<span class="fc" id="L99">        final float r = 30f;</span>
-<span class="fc bfc" id="L100" title="All 2 branches covered.">        for (int i = (int) Math.max(0, x - (int) r); i &lt; Math.min(Terrain.heights.size(), x + (int) r); i++) {</span>
-<span class="fc" id="L101">          float d = Math.abs(i - x);</span>
-<span class="fc" id="L102">          float semiCircleHeight = (float) Math.sqrt(Math.max(0, r * r - d * d));</span>
-<span class="pc bpc" id="L103" title="3 of 4 branches missed.">          if (Terrain.heights.get(i) &lt; y + semiCircleHeight &amp;&amp; Terrain.heights.get(i) &gt; y - semiCircleHeight) {</span>
-<span class="nc" id="L104">            Terrain.heights.set(i, y + semiCircleHeight);</span>
+<span class="nc" id="L113">        final float r = 30f;</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        for (int i = (int) Math.max(0, x - (int) r); i &lt; Math.min(Terrain.heights.size(), x + (int) r); i++) {</span>
+<span class="nc" id="L115">          float d = Math.abs(i - x);</span>
+<span class="nc" id="L116">          float semiCircleHeight = (float) Math.sqrt(Math.max(0, r * r - d * d));</span>
+<span class="nc bnc" id="L117" title="All 4 branches missed.">          if (Terrain.heights.get(i) &lt; y + semiCircleHeight &amp;&amp; Terrain.heights.get(i) &gt; y - semiCircleHeight) {</span>
+<span class="nc" id="L118">            Terrain.heights.set(i, y + semiCircleHeight);</span>
             }
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">          else if (Terrain.heights.get(i) &lt; y - semiCircleHeight) {</span>
-<span class="nc" id="L107">            Terrain.heights.set(i, Terrain.heights.get(i) + 2 * semiCircleHeight);</span>
-<span class="nc" id="L108">            Terrain.heights.set(i, Math.min(Terrain.heights.get(i), y + semiCircleHeight));</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">          else if (Terrain.heights.get(i) &lt; y - semiCircleHeight) {</span>
+<span class="nc" id="L121">            Terrain.heights.set(i, Terrain.heights.get(i) + 2 * semiCircleHeight);</span>
+<span class="nc" id="L122">            Terrain.heights.set(i, Math.min(Terrain.heights.get(i), y + semiCircleHeight));</span>
             }
         }
-<span class="fc" id="L111">    }</span>
+<span class="nc" id="L125">    }</span>
 
     /**
      * Checks if the bomb has gone outside the boundaries of the game area.
      * @return True if the bomb is outside the game area, false otherwise.
      */
     boolean outside() {
-<span class="nc bnc" id="L118" title="All 6 branches missed.">        return x &lt; 0 || x &gt; App.WIDTH || y &gt; App.HEIGHT; // check if the bomb went outside the screen</span>
+<span class="nc bnc" id="L132" title="All 6 branches missed.">        return x &lt; 0 || x &gt; App.WIDTH || y &gt; App.HEIGHT; // check if the bomb went outside the screen</span>
     }
 
      /**
@@ -127,7 +141,7 @@ public class Bomb {
      * @param power The power of the bomb being fired.
      */
     public static Bomb bombA(PApplet app, float x, float y, float angle, int power) {
-<span class="nc" id="L130">        return new Bomb(app, x, y, angle, power, app.color(0, 0, 255), 'A'); // blue</span>
+<span class="nc" id="L144">        return new Bomb(app, x, y, angle, power, app.color(0, 0, 255), 'A'); // blue</span>
     }
 
     /**
@@ -139,7 +153,7 @@ public class Bomb {
      * @param power The power of the bomb being fired.
      */
     public static Bomb bombB(PApplet app, float x, float y, float angle, int power) {
-<span class="nc" id="L142">        return new Bomb(app, x, y, angle, power, app.color(255, 0, 0), 'B'); // red</span>
+<span class="nc" id="L156">        return new Bomb(app, x, y, angle, power, app.color(255, 0, 0), 'B'); // red</span>
     }
 
     /**
@@ -151,7 +165,7 @@ public class Bomb {
      * @param power The power of the bomb being fired.
      */
     public static Bomb bombC(PApplet app, float x, float y, float angle, int power) {
-<span class="nc" id="L154">        return new Bomb(app, x, y, angle, power, app.color(0, 255, 255), 'C'); // cyan</span>
+<span class="nc" id="L168">        return new Bomb(app, x, y, angle, power, app.color(0, 255, 255), 'C'); // cyan</span>
     }
 
     /**
@@ -163,7 +177,7 @@ public class Bomb {
      * @param power The power of the bomb being fired.
      */
     public static Bomb bombD(PApplet app, float x, float y, float angle, int power) {
-<span class="nc" id="L166">        return new Bomb(app, x, y, angle, power, app.color(255, 255, 0), 'D'); // yellow</span>
+<span class="nc" id="L180">        return new Bomb(app, x, y, angle, power, app.color(255, 255, 0), 'D'); // yellow</span>
     }
 
     /**
@@ -171,7 +185,7 @@ public class Bomb {
      * @return Current x-coordinate.
      */
     public float getX() {
-<span class="fc" id="L174">        return this.x;</span>
+<span class="nc" id="L188">        return this.x;</span>
     }
 
     /**
@@ -179,7 +193,7 @@ public class Bomb {
      * @return Current y-coordinate.
      */
     public float getY() {
-<span class="fc" id="L182">        return this.y;</span>
+<span class="nc" id="L196">        return this.y;</span>
     }
 
     /**
@@ -187,37 +201,37 @@ public class Bomb {
      * @param tanks The list of tanks to check and update based on the explosion.
      */
     public void destroyTank(ArrayList&lt;Tank&gt; tanks) { // remove the tank from the game if it falls below the map or health is 0
-<span class="nc" id="L190">        float radius = 30f;</span>
-<span class="nc" id="L191">        Iterator&lt;Tank&gt; iterator = tanks.iterator();</span>
-<span class="nc bnc" id="L192" title="All 2 branches missed.">        while (iterator.hasNext()) {</span>
-<span class="nc" id="L193">            Tank tank = iterator.next();</span>
-<span class="nc" id="L194">            float dist = PApplet.dist(x, y, tank.getPosX(), tank.getPosY());</span>
-<span class="nc bnc" id="L195" title="All 2 branches missed.">            if (dist &lt; radius) {</span>
-<span class="nc" id="L196">                int damage = (int) ((1 - (dist / radius)) * 60);</span>
-<span class="nc" id="L197">                int oldHealth = tank.getHealth();</span>
-<span class="nc" id="L198">                tank.damage(damage);</span>
-<span class="nc" id="L199">                int healthLost = oldHealth - tank.getHealth();</span>
-<span class="nc bnc" id="L200" title="All 2 branches missed.">                if (firingTank != tank.getTankName()) { // only update score if the damaged tank is not the firing tank</span>
-<span class="nc" id="L201">                    ((App) app).updateScore(firingTank, healthLost);</span>
+<span class="fc" id="L204">        float radius = 30f;</span>
+<span class="fc" id="L205">        Iterator&lt;Tank&gt; iterator = tanks.iterator();</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        while (iterator.hasNext()) {</span>
+<span class="fc" id="L207">            Tank tank = iterator.next();</span>
+<span class="fc" id="L208">            float dist = PApplet.dist(x, y, tank.getPosX(), tank.getPosY());</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">            if (dist &lt; radius) {</span>
+<span class="fc" id="L210">                int damage = (int) ((1 - (dist / radius)) * 60);</span>
+<span class="fc" id="L211">                int oldHealth = tank.getHealth();</span>
+<span class="fc" id="L212">                tank.damage(damage);</span>
+<span class="fc" id="L213">                int healthLost = oldHealth - tank.getHealth();</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">                if (firingTank != tank.getTankName()) { // only update score if the damaged tank is not the firing tank</span>
+<span class="fc" id="L215">                    ((App) app).updateScore(firingTank, healthLost);</span>
                 }
-<span class="nc bnc" id="L203" title="All 2 branches missed.">                if (tank.getHealth() &lt;= 0) { // destroy the tank with an explostion radius of 15</span>
-<span class="nc" id="L204">                    final float r = 15f;</span>
-<span class="nc bnc" id="L205" title="All 2 branches missed.">                    for (int i = (int) Math.max(0, x - (int) r); i &lt; Math.min(Terrain.heights.size(), x + (int) r); i++) {</span>
-<span class="nc" id="L206">                    float d = Math.abs(i - x);</span>
-<span class="nc" id="L207">                    float semiCircleHeight = (float) Math.sqrt(Math.max(0, r * r - d * d));</span>
-<span class="nc bnc" id="L208" title="All 4 branches missed.">                    if (Terrain.heights.get(i) &lt; y + semiCircleHeight &amp;&amp; Terrain.heights.get(i) &gt; y - semiCircleHeight) {</span>
-<span class="nc" id="L209">                        Terrain.heights.set(i, y + semiCircleHeight);</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">                if (tank.getHealth() &lt;= 0) { // destroy the tank with an explostion radius of 15</span>
+<span class="nc" id="L218">                    final float r = 15f;</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">                    for (int i = (int) Math.max(0, x - (int) r); i &lt; Math.min(Terrain.heights.size(), x + (int) r); i++) {</span>
+<span class="nc" id="L220">                    float d = Math.abs(i - x);</span>
+<span class="nc" id="L221">                    float semiCircleHeight = (float) Math.sqrt(Math.max(0, r * r - d * d));</span>
+<span class="nc bnc" id="L222" title="All 4 branches missed.">                    if (Terrain.heights.get(i) &lt; y + semiCircleHeight &amp;&amp; Terrain.heights.get(i) &gt; y - semiCircleHeight) {</span>
+<span class="nc" id="L223">                        Terrain.heights.set(i, y + semiCircleHeight);</span>
                         }
-<span class="nc bnc" id="L211" title="All 2 branches missed.">                    else if (Terrain.heights.get(i) &lt; y - semiCircleHeight) {</span>
-<span class="nc" id="L212">                        Terrain.heights.set(i, Terrain.heights.get(i) + 2 * semiCircleHeight);</span>
-<span class="nc" id="L213">                        Terrain.heights.set(i, Math.min(Terrain.heights.get(i), y + semiCircleHeight));</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">                    else if (Terrain.heights.get(i) &lt; y - semiCircleHeight) {</span>
+<span class="nc" id="L226">                        Terrain.heights.set(i, Terrain.heights.get(i) + 2 * semiCircleHeight);</span>
+<span class="nc" id="L227">                        Terrain.heights.set(i, Math.min(Terrain.heights.get(i), y + semiCircleHeight));</span>
                         }
                     }
-<span class="nc" id="L216">                    iterator.remove(); // remove tank </span>
+<span class="nc" id="L230">                    iterator.remove(); // remove tank </span>
                 }
             }
-<span class="nc" id="L219">        }</span>
-<span class="nc" id="L220">    }</span>
+<span class="fc" id="L233">        }</span>
+<span class="fc" id="L234">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

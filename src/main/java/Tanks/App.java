@@ -52,6 +52,7 @@ public class App extends PApplet {
     // Level management
     public int currentLevel = 1;
     private final int maxLevel = 3;
+    private boolean gameEnded = false;
 
     // Configurations
     public String configPath; // Path to the configuration file, not used in current implementation
@@ -214,9 +215,15 @@ public class App extends PApplet {
                 powerup.repairTank(tank);
             }
 
-            if (event.getKeyCode() == 'R' && tanks.size() == 1 && currentLevel == 3) {
+            if (event.getKeyCode() == 'R' && gameEnded == true) {
                 currentLevel = 1;
                 loadLevel(currentLevel);
+                gameEnded = false;
+                loop();
+                setAScore(0);
+                setBScore(0);
+                setCScore(0);
+                setDScore(0);
             }
 
             if (event.getKeyCode() == 'F') {
@@ -225,6 +232,10 @@ public class App extends PApplet {
 
             if (event.getKeyCode() == 'P') {
                 powerup.buyChute(tank);
+            }
+
+            if (event.getKeyCode() == 'H') {
+                powerup.buyShield(tank);
             }
 
             if (event.getKeyCode() == ' ') {
@@ -449,6 +460,7 @@ public class App extends PApplet {
             hud.displayFuel(currentTank);
             hud.displayChuteIcon(currentTank);
             hud.displayHealth(currentTank); 
+            hud.displayShield(currentTank);
             hud.displayLeaderboard(this);
 
             // display the windspeed
@@ -465,6 +477,7 @@ public class App extends PApplet {
             } 
             else {
                 hud.displayTheEnd();
+                gameEnded = true;
             }
         }
     }

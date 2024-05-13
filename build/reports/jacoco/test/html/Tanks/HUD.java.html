@@ -25,229 +25,246 @@ class PlayerScore {
  */
 public class HUD {
 
-    private PApplet app; // Reference to the Processing application.
+    private App app; // Reference to the Processing application.
     private Terrain terrain; // Terrain reference for checking positions.
 <span class="fc" id="L30">    private float h = 60; // Base height offset for drawing elements.</span>
 <span class="fc" id="L31">    private float line = 50; // Length of the line for indicators.</span>
 <span class="fc" id="L32">    private float width = 14; // Width used for elements like arrows.</span>
     private PImage fuelIcon; // Icon for fuel display.
     private PImage chute; // Icon for parachute display.
+<span class="fc" id="L35">    public String winner = &quot;&quot;;</span>
 
     /**
      * Constructor for HUD class.
      * @param app Instance of PApplet used for drawing.
      */
-<span class="fc" id="L40">    public HUD(PApplet app) {</span>
-<span class="fc" id="L41">        this.app = app;</span>
-<span class="fc" id="L42">        fuelIcon = app.loadImage(&quot;src/main/resources/Tanks/fuel.png&quot;);</span>
-<span class="fc" id="L43">        chute = app.loadImage(&quot;src/main/resources/Tanks/parachute.png&quot;);</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L41">    public HUD(App app) {</span>
+<span class="fc" id="L42">        this.app = app;</span>
+<span class="fc" id="L43">        fuelIcon = app.loadImage(&quot;src/main/resources/Tanks/fuel.png&quot;);</span>
+<span class="fc" id="L44">        chute = app.loadImage(&quot;src/main/resources/Tanks/parachute.png&quot;);</span>
+<span class="fc" id="L45">    }</span>
 
     /**
      * Draws an arrow pointing to the tank's position.
      * @param tank The tank for which to draw the arrow.
      */
     public void drawArrow(Tank tank) {
-<span class="fc" id="L51">        float tankX = tank.getPosX() + App.CELLSIZE / 2;</span>
-<span class="fc" id="L52">        float tankY = terrain.getYc(tank.getPosX() + App.CELLSIZE / 2) - h;</span>
+<span class="fc" id="L52">        float tankX = tank.getPosX() + App.CELLSIZE / 2;</span>
+<span class="fc" id="L53">        float tankY = terrain.getYc(tank.getPosX() + App.CELLSIZE / 2) - h;</span>
         // draw the line of the arrow
-<span class="fc" id="L54">        app.stroke(0);</span>
-<span class="fc" id="L55">        app.fill(0, 0, 0);</span>
-<span class="fc" id="L56">        app.strokeWeight(2);</span>
-<span class="fc" id="L57">        app.line(tankX, tankY, tankX, tankY - line);</span>
+<span class="fc" id="L55">        app.stroke(0);</span>
+<span class="fc" id="L56">        app.fill(0, 0, 0);</span>
+<span class="fc" id="L57">        app.strokeWeight(2);</span>
+<span class="fc" id="L58">        app.line(tankX, tankY, tankX, tankY - line);</span>
         // draw the triangle on top of the arrow
-<span class="fc" id="L59">        app.noStroke(); </span>
-<span class="fc" id="L60">        app.triangle(</span>
+<span class="fc" id="L60">        app.noStroke(); </span>
+<span class="fc" id="L61">        app.triangle(</span>
             tankX, tankY + line- 45, // base of triangle
             tankX - width, tankY + line - width - 45, // left of triangle
             tankX + width, tankY + line - width-45  // right of triangle
         );
-<span class="fc" id="L65">    }</span>
+<span class="fc" id="L66">    }</span>
 
     /**
      * Displays the current player's turn information.
      * @param currentTank The tank that is currently active.
      */
     public void whoIsDaPlayer(Tank currentTank) {
-<span class="fc" id="L72">        String playerTurn = &quot;Player &quot; + currentTank.getTankName() + &quot;'s turn&quot;; // display the currennt tanks' turn</span>
-<span class="fc" id="L73">        app.fill(0);</span>
-<span class="fc" id="L74">        app.textSize(15);</span>
-<span class="fc" id="L75">        app.text(playerTurn, 10, 30);</span>
-<span class="fc" id="L76">    }</span>
+<span class="fc" id="L73">        String playerTurn = &quot;Player &quot; + currentTank.getTankName() + &quot;'s turn&quot;; // display the currennt tanks' turn</span>
+<span class="fc" id="L74">        app.fill(0);</span>
+<span class="fc" id="L75">        app.textSize(15);</span>
+<span class="fc" id="L76">        app.text(playerTurn, 10, 30);</span>
+<span class="fc" id="L77">    }</span>
 
     /**
      * Displays the fuel status next to the fuel icon.
      * @param tank The tank whose fuel status is to be displayed.
      */
     public void displayFuel(Tank tank) {
-<span class="fc" id="L83">        float tankX = 150;</span>
-<span class="fc" id="L84">        float tankY = 30;</span>
-<span class="fc" id="L85">        app.image(fuelIcon, tankX, tankY - 20, 20, 20); //draw the fuel icon with proper positioning</span>
-<span class="fc" id="L86">        app.fill(0);</span>
-<span class="fc" id="L87">        app.textSize(15);</span>
-<span class="fc" id="L88">        int fuelText = tank.remainingPetrol();</span>
-<span class="fc" id="L89">        app.text(fuelText, tankX + 25, tankY);</span>
-<span class="fc" id="L90">    }</span>
+<span class="fc" id="L84">        float tankX = 150;</span>
+<span class="fc" id="L85">        float tankY = 30;</span>
+<span class="fc" id="L86">        app.image(fuelIcon, tankX, tankY - 20, 20, 20); //draw the fuel icon with proper positioning</span>
+<span class="fc" id="L87">        app.fill(0);</span>
+<span class="fc" id="L88">        app.textSize(15);</span>
+<span class="fc" id="L89">        int fuelText = tank.remainingPetrol();</span>
+<span class="fc" id="L90">        app.text(fuelText, tankX + 25, tankY);</span>
+<span class="fc" id="L91">    }</span>
 
     /**
      * Displays the parachute icon and remaining count for the specified tank.
      * @param tank The tank whose parachute info is displayed.
      */
     public void displayChuteIcon(Tank tank) {
-<span class="fc" id="L97">        app.image(chute, 140, 40, 30, 30);</span>
-<span class="fc" id="L98">        app.fill(0);</span>
-<span class="fc" id="L99">        app.textSize(15);</span>
-<span class="fc" id="L100">        int text = tank.getParachute().getRemainingParachutes();</span>
-<span class="fc" id="L101">        app.text(text, 150 + 30, 60);</span>
-<span class="fc" id="L102">    }</span>
+<span class="fc" id="L98">        app.image(chute, 140, 40, 30, 30);</span>
+<span class="fc" id="L99">        app.fill(0);</span>
+<span class="fc" id="L100">        app.textSize(15);</span>
+<span class="fc" id="L101">        int text = tank.getParachute().getRemainingParachutes();</span>
+<span class="fc" id="L102">        app.text(text, 150 + 30, 60);</span>
+<span class="fc" id="L103">    }</span>
+
+    /**
+     * Displays the status of the shield of the tank.
+     * @param tank The tank whose shield status is to be displayed.
+     */
+    public void displayShield(Tank tank) {
+<span class="fc" id="L110">        app.textSize(15);</span>
+<span class="fc" id="L111">        String tf = &quot;&quot;;</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (tank.isShieldActive() == true) {</span>
+<span class="nc" id="L113">            tf = &quot;on&quot;;</span>
+        }
+        else {
+<span class="fc" id="L116">            tf = &quot;off&quot;;</span>
+        }
+<span class="fc" id="L118">        String text = &quot;Shield: &quot; + tf;</span>
+<span class="fc" id="L119">        app.text(text, 600, 30);</span>
+<span class="fc" id="L120">    }</span>
 
     /**
      * Displays the health bar of the tank.
      * @param tank The tank whose health is to be displayed.
      */
     public void displayHealth(Tank tank) {
-<span class="fc" id="L109">        float centerX = app.width / 2.0f;</span>
-<span class="fc" id="L110">        float centerY = app.height - 625;</span>
-<span class="fc" id="L111">        float barLength = 200; // length of bar</span>
-<span class="fc" id="L112">        float barHeight = 20; // height of bar</span>
-<span class="fc" id="L113">        float powerLevelPosition = (barLength * tank.getPowerLevel() / 100) - (barLength / 2); // display the line according to power level</span>
+<span class="fc" id="L127">        float centerX = app.width / 2.0f;</span>
+<span class="fc" id="L128">        float centerY = app.height - 625;</span>
+<span class="fc" id="L129">        float barLength = 200; // length of bar</span>
+<span class="fc" id="L130">        float barHeight = 20; // height of bar</span>
+<span class="fc" id="L131">        float powerLevelPosition = (barLength * tank.getPowerLevel() / 100) - (barLength / 2); // display the line according to power level</span>
 
-<span class="fc" id="L115">        app.textSize(15);</span>
-<span class="fc" id="L116">        app.fill(0);</span>
-<span class="fc" id="L117">        app.text(&quot;Health: &quot;, centerX - barLength / 2 - 60, centerY + 10); // type health</span>
+<span class="fc" id="L133">        app.textSize(15);</span>
+<span class="fc" id="L134">        app.fill(0);</span>
+<span class="fc" id="L135">        app.text(&quot;Health: &quot;, centerX - barLength / 2 - 60, centerY + 10); // type health</span>
 
-<span class="fc" id="L119">        app.fill(200, 200, 200);</span>
-<span class="fc" id="L120">        app.rect(centerX - barLength / 2, centerY, barLength, barHeight); // draw gray colour for health which is lost</span>
+<span class="fc" id="L137">        app.fill(200, 200, 200);</span>
+<span class="fc" id="L138">        app.rect(centerX - barLength / 2, centerY, barLength, barHeight); // draw gray colour for health which is lost</span>
 
-<span class="fc" id="L122">        app.strokeWeight(4);</span>
-<span class="fc" id="L123">        app.stroke(0);</span>
-<span class="fc" id="L124">        app.fill(tank.getColor()); </span>
-<span class="fc" id="L125">        app.rect(centerX - barLength / 2, centerY, barLength * (tank.getHealth() / 100.0f), barHeight); // draw the health bar</span>
+<span class="fc" id="L140">        app.strokeWeight(4);</span>
+<span class="fc" id="L141">        app.stroke(0);</span>
+<span class="fc" id="L142">        app.fill(tank.getColor()); </span>
+<span class="fc" id="L143">        app.rect(centerX - barLength / 2, centerY, barLength * (tank.getHealth() / 100.0f), barHeight); // draw the health bar</span>
 
-<span class="fc" id="L127">        float linePositionX = centerX + powerLevelPosition;</span>
-<span class="fc" id="L128">        app.strokeWeight(4); </span>
-<span class="fc" id="L129">        app.stroke(0);  </span>
-<span class="fc" id="L130">        app.line(linePositionX, centerY, linePositionX, centerY + barHeight); // draw the power level line in the centre</span>
+<span class="fc" id="L145">        float linePositionX = centerX + powerLevelPosition;</span>
+<span class="fc" id="L146">        app.strokeWeight(4); </span>
+<span class="fc" id="L147">        app.stroke(0);  </span>
+<span class="fc" id="L148">        app.line(linePositionX, centerY, linePositionX, centerY + barHeight); // draw the power level line in the centre</span>
 
-<span class="fc" id="L132">        app.strokeWeight(2);</span>
-<span class="fc" id="L133">        app.stroke(255, 0, 0);</span>
-<span class="fc" id="L134">        app.line(linePositionX, centerY, linePositionX, centerY + barHeight); // the line is in the centre by default</span>
-<span class="fc" id="L135">        app.noStroke();</span>
+<span class="fc" id="L150">        app.strokeWeight(2);</span>
+<span class="fc" id="L151">        app.stroke(255, 0, 0);</span>
+<span class="fc" id="L152">        app.line(linePositionX, centerY, linePositionX, centerY + barHeight); // the line is in the centre by default</span>
+<span class="fc" id="L153">        app.noStroke();</span>
 
-<span class="fc" id="L137">        app.fill(0);</span>
-<span class="fc" id="L138">        app.text(&quot;Power: &quot; + tank.getPowerLevel(), centerX - barLength / 2 - 60, centerY + barHeight + 25); // display the power below health</span>
-<span class="fc" id="L139">    }</span>
+<span class="fc" id="L155">        app.fill(0);</span>
+<span class="fc" id="L156">        app.text(&quot;Power: &quot; + tank.getPowerLevel(), centerX - barLength / 2 - 60, centerY + barHeight + 25); // display the power below health</span>
+<span class="fc" id="L157">    }</span>
 
     /**
      * Displays the leaderboard with scores of all players.
      * @param app The main application instance to access scores.
      */
     public void displayLeaderboard(App app) {
-<span class="fc" id="L146">        float x = 740; </span>
-<span class="fc" id="L147">        float y = 110;  </span>
-<span class="fc" id="L148">        float h = 92;</span>
-<span class="fc" id="L149">        float w = 127;</span>
+<span class="fc" id="L164">        float x = 740; </span>
+<span class="fc" id="L165">        float y = 110;  </span>
+<span class="fc" id="L166">        float h = 92;</span>
+<span class="fc" id="L167">        float w = 127;</span>
         // get the word scores in the leaderboard
-<span class="fc" id="L151">        app.fill(0);</span>
-<span class="fc" id="L152">        app.textSize(15);</span>
-<span class="fc" id="L153">        app.noFill();</span>
-<span class="fc" id="L154">        app.textAlign(PApplet.CENTER, PApplet.CENTER);</span>
-<span class="fc" id="L155">        app.text(&quot;Scores&quot;, x + 25, y - 35);</span>
-<span class="fc" id="L156">        app.textAlign(PApplet.LEFT, PApplet.BASELINE); </span>
-<span class="fc" id="L157">        app.rect(x, y - 10, w, h);</span>
+<span class="fc" id="L169">        app.fill(0);</span>
+<span class="fc" id="L170">        app.textSize(15);</span>
+<span class="fc" id="L171">        app.noFill();</span>
+<span class="fc" id="L172">        app.textAlign(PApplet.CENTER, PApplet.CENTER);</span>
+<span class="fc" id="L173">        app.text(&quot;Scores&quot;, x + 25, y - 35);</span>
+<span class="fc" id="L174">        app.textAlign(PApplet.LEFT, PApplet.BASELINE); </span>
+<span class="fc" id="L175">        app.rect(x, y - 10, w, h);</span>
         // draw the line 
-<span class="fc" id="L159">        app.stroke(0); </span>
-<span class="fc" id="L160">        app.strokeWeight(4); </span>
-<span class="fc" id="L161">        app.line(732, 90, 857, 90); </span>
+<span class="fc" id="L177">        app.stroke(0); </span>
+<span class="fc" id="L178">        app.strokeWeight(4); </span>
+<span class="fc" id="L179">        app.line(732, 90, 857, 90); </span>
         // draw the box and the scores in
-<span class="fc" id="L163">        app.stroke(0); </span>
-<span class="fc" id="L164">        app.strokeWeight(4);</span>
-<span class="fc" id="L165">        app.noFill(); </span>
-<span class="fc" id="L166">        app.rect(x - 10, y - 45, w, h + 25);</span>
-<span class="fc" id="L167">        app.textSize(15);</span>
-<span class="fc" id="L168">        app.fill(app.color(0, 0, 255)); </span>
-<span class="fc" id="L169">        app.text(&quot;Player A     &quot; + app.getAScore(), x, y);</span>
-<span class="fc" id="L170">        y += 20;</span>
+<span class="fc" id="L181">        app.stroke(0); </span>
+<span class="fc" id="L182">        app.strokeWeight(4);</span>
+<span class="fc" id="L183">        app.noFill(); </span>
+<span class="fc" id="L184">        app.rect(x - 10, y - 45, w, h + 25);</span>
+<span class="fc" id="L185">        app.textSize(15);</span>
+<span class="fc" id="L186">        app.fill(app.color(0, 0, 255)); </span>
+<span class="fc" id="L187">        app.text(&quot;Player A     &quot; + app.getAScore(), x, y);</span>
+<span class="fc" id="L188">        y += 20;</span>
         
-<span class="fc" id="L172">        app.fill(app.color(255, 0, 0)); </span>
-<span class="fc" id="L173">        app.text(&quot;Player B     &quot; + app.getBScore(), x, y);</span>
-<span class="fc" id="L174">        y += 20;</span>
+<span class="fc" id="L190">        app.fill(app.color(255, 0, 0)); </span>
+<span class="fc" id="L191">        app.text(&quot;Player B     &quot; + app.getBScore(), x, y);</span>
+<span class="fc" id="L192">        y += 20;</span>
         
-<span class="fc" id="L176">        app.fill(app.color(0, 255, 255)); </span>
-<span class="fc" id="L177">        app.text(&quot;Player C     &quot; + app.getCScore(), x, y);</span>
-<span class="fc" id="L178">        y += 20;</span>
+<span class="fc" id="L194">        app.fill(app.color(0, 255, 255)); </span>
+<span class="fc" id="L195">        app.text(&quot;Player C     &quot; + app.getCScore(), x, y);</span>
+<span class="fc" id="L196">        y += 20;</span>
         
-<span class="fc" id="L180">        app.fill(app.color(255, 255, 0));</span>
-<span class="fc" id="L181">        app.text(&quot;Player D     &quot; + app.getDScore(), x, y);</span>
-<span class="fc" id="L182">    }</span>
+<span class="fc" id="L198">        app.fill(app.color(255, 255, 0));</span>
+<span class="fc" id="L199">        app.text(&quot;Player D     &quot; + app.getDScore(), x, y);</span>
+<span class="fc" id="L200">    }</span>
 
     /**
      * Displays the end game message and a list of player scores in descending order.
      */
     public void displayTheEnd() {
-<span class="nc" id="L188">        int scoreA = ((App) app).getAScore();</span>
-<span class="nc" id="L189">        int scoreB = ((App) app).getBScore();</span>
-<span class="nc" id="L190">        int scoreC = ((App) app).getCScore();</span>
-<span class="nc" id="L191">        int scoreD = ((App) app).getDScore();   </span>
-<span class="nc" id="L192">        int maxScore = Math.max(Math.max(scoreA, scoreB), Math.max(scoreC, scoreD));</span>
-<span class="nc" id="L193">        String winner = &quot;&quot;;</span>
-<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (scoreA == maxScore) {</span>
-<span class="nc" id="L195">            winner = &quot;Player A wins!&quot;;</span>
-<span class="nc bnc" id="L196" title="All 2 branches missed.">        } else if (scoreB == maxScore) {</span>
-<span class="nc" id="L197">            winner = &quot;Player B wins!&quot;;</span>
-<span class="nc bnc" id="L198" title="All 2 branches missed.">        } else if (scoreC == maxScore) {</span>
-<span class="nc" id="L199">            winner = &quot;Player C wins!&quot;;</span>
-<span class="nc bnc" id="L200" title="All 2 branches missed.">        } else if (scoreD == maxScore) {</span>
-<span class="nc" id="L201">            winner = &quot;Player D wins!&quot;;</span>
+<span class="fc" id="L206">        int scoreA = ((App) app).getAScore();</span>
+<span class="fc" id="L207">        int scoreB = ((App) app).getBScore();</span>
+<span class="fc" id="L208">        int scoreC = ((App) app).getCScore();</span>
+<span class="fc" id="L209">        int scoreD = ((App) app).getDScore();   </span>
+<span class="fc" id="L210">        int maxScore = Math.max(Math.max(scoreA, scoreB), Math.max(scoreC, scoreD));</span>
+<span class="fc bfc" id="L211" title="All 2 branches covered.">        if (scoreA == maxScore) {</span>
+<span class="fc" id="L212">            winner = &quot;Player A wins!&quot;;</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        } else if (scoreB == maxScore) {</span>
+<span class="fc" id="L214">            winner = &quot;Player B wins!&quot;;</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">        } else if (scoreC == maxScore) {</span>
+<span class="fc" id="L216">            winner = &quot;Player C wins!&quot;;</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">        } else if (scoreD == maxScore) {</span>
+<span class="fc" id="L218">            winner = &quot;Player D wins!&quot;;</span>
         }
         // list of playrs and scores
-<span class="nc" id="L204">        List&lt;PlayerScore&gt; scores = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L205">        scores.add(new PlayerScore(&quot;Player A&quot;, scoreA, app.color(0, 0, 255)));  // Blue</span>
-<span class="nc" id="L206">        scores.add(new PlayerScore(&quot;Player B&quot;, scoreB, app.color(255, 0, 0)));  // Red</span>
-<span class="nc" id="L207">        scores.add(new PlayerScore(&quot;Player C&quot;, scoreC, app.color(0, 255, 255))); // Cyan</span>
-<span class="nc" id="L208">        scores.add(new PlayerScore(&quot;Player D&quot;, scoreD, app.color(255, 255, 0))); // Yellow</span>
+<span class="fc" id="L221">        List&lt;PlayerScore&gt; scores = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L222">        scores.add(new PlayerScore(&quot;Player A&quot;, scoreA, app.color(0, 0, 255)));  // Blue</span>
+<span class="fc" id="L223">        scores.add(new PlayerScore(&quot;Player B&quot;, scoreB, app.color(255, 0, 0)));  // Red</span>
+<span class="fc" id="L224">        scores.add(new PlayerScore(&quot;Player C&quot;, scoreC, app.color(0, 255, 255))); // Cyan</span>
+<span class="fc" id="L225">        scores.add(new PlayerScore(&quot;Player D&quot;, scoreD, app.color(255, 255, 0))); // Yellow</span>
         // sort with desc order
-<span class="nc" id="L210">        Collections.sort(scores, (p1, p2) -&gt; Integer.compare(p2.score, p1.score));</span>
+<span class="fc" id="L227">        Collections.sort(scores, (p1, p2) -&gt; Integer.compare(p2.score, p1.score));</span>
         // winner
-<span class="nc" id="L212">        app.textSize(32);</span>
-<span class="nc" id="L213">        app.fill(0);</span>
-<span class="nc" id="L214">        app.textAlign(PApplet.CENTER, PApplet.CENTER);</span>
-<span class="nc" id="L215">        app.text(winner, app.width / 2, app.height / 2 - 100);</span>
+<span class="fc" id="L229">        app.textSize(32);</span>
+<span class="fc" id="L230">        app.fill(0);</span>
+<span class="fc" id="L231">        app.textAlign(PApplet.CENTER, PApplet.CENTER);</span>
+<span class="fc" id="L232">        app.text(winner, app.width / 2, app.height / 2 - 100);</span>
         //box 
-<span class="nc" id="L217">        float boxX = app.width / 2 - 100;</span>
-<span class="nc" id="L218">        float boxY = app.height / 2 - 50;</span>
-<span class="nc" id="L219">        float boxWidth = 200;</span>
-<span class="nc" id="L220">        float boxHeight = 130;</span>
-<span class="nc bnc" id="L221" title="All 2 branches missed.">        if (scoreA == maxScore) {</span>
-<span class="nc" id="L222">            app.fill(0, 0, 255, 150);</span>
-<span class="nc" id="L223">            app.rect(boxX, boxY, boxWidth, boxHeight);</span>
+<span class="fc" id="L234">        float boxX = app.width / 2 - 100;</span>
+<span class="fc" id="L235">        float boxY = app.height / 2 - 50;</span>
+<span class="fc" id="L236">        float boxWidth = 200;</span>
+<span class="fc" id="L237">        float boxHeight = 130;</span>
+<span class="fc bfc" id="L238" title="All 2 branches covered.">        if (scoreA == maxScore) {</span>
+<span class="fc" id="L239">            app.fill(0, 0, 255, 150);</span>
+<span class="fc" id="L240">            app.rect(boxX, boxY, boxWidth, boxHeight);</span>
         }
-<span class="nc bnc" id="L225" title="All 2 branches missed.">        else if (scoreB == maxScore) {</span>
-<span class="nc" id="L226">            app.fill(255, 0, 0, 150);</span>
-<span class="nc" id="L227">            app.rect(boxX, boxY, boxWidth, boxHeight);</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">        else if (scoreB == maxScore) {</span>
+<span class="fc" id="L243">            app.fill(255, 0, 0, 150);</span>
+<span class="fc" id="L244">            app.rect(boxX, boxY, boxWidth, boxHeight);</span>
         }
-<span class="nc bnc" id="L229" title="All 2 branches missed.">        else if (scoreC == maxScore) {</span>
-<span class="nc" id="L230">            app.fill(0, 255, 255, 150);</span>
-<span class="nc" id="L231">            app.rect(boxX, boxY, boxWidth, boxHeight);</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">        else if (scoreC == maxScore) {</span>
+<span class="fc" id="L247">            app.fill(0, 255, 255, 150);</span>
+<span class="fc" id="L248">            app.rect(boxX, boxY, boxWidth, boxHeight);</span>
         }
-<span class="nc bnc" id="L233" title="All 2 branches missed.">        else if (scoreD == maxScore) {</span>
-<span class="nc" id="L234">            app.fill(255, 255, 0, 150);</span>
-<span class="nc" id="L235">            app.rect(boxX, boxY, boxWidth, boxHeight);</span>
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">        else if (scoreD == maxScore) {</span>
+<span class="fc" id="L251">            app.fill(255, 255, 0, 150);</span>
+<span class="fc" id="L252">            app.rect(boxX, boxY, boxWidth, boxHeight);</span>
         }
-<span class="nc" id="L237">        app.textSize(20);</span>
-<span class="nc" id="L238">        app.fill(0);</span>
-<span class="nc" id="L239">        app.textAlign(PApplet.CENTER, PApplet.CENTER);</span>
-<span class="nc" id="L240">        app.text(&quot;Hit 'R' to restart the game :)&quot;, app.width / 2, app.height / 2 + 97);</span>
+<span class="fc" id="L254">        app.textSize(20);</span>
+<span class="fc" id="L255">        app.fill(0);</span>
+<span class="fc" id="L256">        app.textAlign(PApplet.CENTER, PApplet.CENTER);</span>
+<span class="fc" id="L257">        app.text(&quot;Hit 'R' to restart the game :)&quot;, app.width / 2, app.height / 2 + 97);</span>
         // display scores
-<span class="nc" id="L242">        float yPos = boxY + 20;</span>
-<span class="nc" id="L243">        app.textSize(24);</span>
-<span class="nc bnc" id="L244" title="All 2 branches missed.">        for (PlayerScore playerScore : scores) {</span>
-<span class="nc" id="L245">            app.fill(playerScore.color);</span>
-<span class="nc" id="L246">            app.text(playerScore.name + &quot;:     &quot; + playerScore.score, boxX + 100, yPos);</span>
-<span class="nc" id="L247">            yPos += 30;</span>
-<span class="nc" id="L248">        }</span>
-<span class="nc" id="L249">        app.noLoop();</span>
-<span class="nc" id="L250">    }</span>
+<span class="fc" id="L259">        float yPos = boxY + 20;</span>
+<span class="fc" id="L260">        app.textSize(24);</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">        for (PlayerScore playerScore : scores) {</span>
+<span class="fc" id="L262">            app.fill(playerScore.color);</span>
+<span class="fc" id="L263">            app.text(playerScore.name + &quot;:     &quot; + playerScore.score, boxX + 100, yPos);</span>
+<span class="fc" id="L264">            yPos += 30;</span>
+<span class="fc" id="L265">        }</span>
+<span class="fc" id="L266">        app.noLoop();</span>
+<span class="fc" id="L267">    }</span>
     
 }
 

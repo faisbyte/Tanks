@@ -46,6 +46,20 @@ public class Bomb {
     }
 
     /**
+     * Sets the X co ordinate for the bomb. (Used for testing purposes only)
+     */
+    public void setX(float X) {
+        this.x = X;
+    }
+
+    /**
+     * Sets the Y co ordinate for the bomb. (Used for testing purposes only)
+     */
+    public void setY(float Y) {
+        this.y = Y;
+    }
+
+    /**
      * Returns the identifier of the tank that fired the bomb.
      * @return The firing tank's identifier.
      */

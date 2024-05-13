@@ -25,19 +25,20 @@ class PlayerScore {
  */
 public class HUD {
 
-    private PApplet app; // Reference to the Processing application.
+    private App app; // Reference to the Processing application.
     private Terrain terrain; // Terrain reference for checking positions.
     private float h = 60; // Base height offset for drawing elements.
     private float line = 50; // Length of the line for indicators.
     private float width = 14; // Width used for elements like arrows.
     private PImage fuelIcon; // Icon for fuel display.
     private PImage chute; // Icon for parachute display.
+    public String winner = "";
 
     /**
      * Constructor for HUD class.
      * @param app Instance of PApplet used for drawing.
      */
-    public HUD(PApplet app) {
+    public HUD(App app) {
         this.app = app;
         fuelIcon = app.loadImage("src/main/resources/Tanks/fuel.png");
         chute = app.loadImage("src/main/resources/Tanks/parachute.png");
@@ -99,6 +100,23 @@ public class HUD {
         app.textSize(15);
         int text = tank.getParachute().getRemainingParachutes();
         app.text(text, 150 + 30, 60);
+    }
+
+    /**
+     * Displays the status of the shield of the tank.
+     * @param tank The tank whose shield status is to be displayed.
+     */
+    public void displayShield(Tank tank) {
+        app.textSize(15);
+        String tf = "";
+        if (tank.isShieldActive() == true) {
+            tf = "on";
+        }
+        else {
+            tf = "off";
+        }
+        String text = "Shield: " + tf;
+        app.text(text, 600, 30);
     }
 
     /**
@@ -190,7 +208,6 @@ public class HUD {
         int scoreC = ((App) app).getCScore();
         int scoreD = ((App) app).getDScore();   
         int maxScore = Math.max(Math.max(scoreA, scoreB), Math.max(scoreC, scoreD));
-        String winner = "";
         if (scoreA == maxScore) {
             winner = "Player A wins!";
         } else if (scoreB == maxScore) {

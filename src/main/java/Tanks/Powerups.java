@@ -11,6 +11,7 @@ public class Powerups {
     private int chuteCost = 30; // Cost in score points to buy an additional parachute
     private int maxHealth = 100; // Maximum health a tank can have
     private int morePetrol = 200; // Amount of fuel added when petrol is bought
+    private int shieldCost = 40;
 
     /**
      * Constructor to create a Powerups object.
@@ -65,6 +66,18 @@ public class Powerups {
             tank.getParachute().setParachutes(tank.getParachute().getRemainingParachutes() + 1);
             app.updateScore(tank.getTankName(), -chuteCost);
         }
+    }
+
+    public void buyShield(Tank tank) {
+        int a = app.getAScore();
+        int b = app.getBScore();
+        int c = app.getCScore();
+        int d = app.getDScore();
+        if ((a >= shieldCost || b >= shieldCost || c >= shieldCost || d >= shieldCost) && (a > 0 || b > 0 || c > 0 || d > 0)) {
+            tank.setShield(true);
+            app.updateScore(tank.getTankName(), -shieldCost);
+        }
+
     }
 
 }

@@ -135,7 +135,7 @@ public class Terrain {
             transformed.add(sum / count); // add avg to list
         }
         heights.clear();
-        heights.addAll(transformed); // update the main list (i suck at for loop)
+        heights.addAll(transformed);
     }
 
     /**

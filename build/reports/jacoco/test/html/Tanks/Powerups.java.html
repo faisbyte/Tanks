@@ -11,61 +11,74 @@ public class Powerups {
 <span class="fc" id="L11">    private int chuteCost = 30; // Cost in score points to buy an additional parachute</span>
 <span class="fc" id="L12">    private int maxHealth = 100; // Maximum health a tank can have</span>
 <span class="fc" id="L13">    private int morePetrol = 200; // Amount of fuel added when petrol is bought</span>
+<span class="fc" id="L14">    private int shieldCost = 40;</span>
 
     /**
      * Constructor to create a Powerups object.
      * @param app The main game app reference.
      */
-<span class="fc" id="L19">    public Powerups(App app) {</span>
-<span class="fc" id="L20">        this.app = app;</span>
-<span class="fc" id="L21">    }</span>
+<span class="fc" id="L20">    public Powerups(App app) {</span>
+<span class="fc" id="L21">        this.app = app;</span>
+<span class="fc" id="L22">    }</span>
 
     /**
      * Repairs a tank, increasing its health by 20 points if the player's score is sufficient.
      * @param tank The tank to repair.
      */
     public void repairTank(Tank tank) { // increase the tanks health by 20 if the score is above 20
-<span class="fc" id="L28">        int a = app.getAScore();</span>
-<span class="fc" id="L29">        int b = app.getBScore();</span>
-<span class="fc" id="L30">        int c = app.getCScore();</span>
-<span class="fc" id="L31">        int d = app.getDScore();</span>
-<span class="pc bpc" id="L32" title="6 of 16 branches missed.">        if ((a &gt;= repairCost || b &gt;= repairCost || c &gt;= repairCost || d &gt;= repairCost) &amp;&amp; (a &gt; 0 || b &gt; 0 || c &gt; 0 || d &gt; 0)) {</span>
-<span class="fc bfc" id="L33" title="All 2 branches covered.">            if (tank.getHealth() &lt; maxHealth) {</span>
-<span class="fc" id="L34">                tank.setHealth(Math.min(tank.getHealth() + 20, maxHealth));</span>
-<span class="fc" id="L35">                app.updateScore(tank.getTankName(), -repairCost);</span>
+<span class="nc" id="L29">        int a = app.getAScore();</span>
+<span class="nc" id="L30">        int b = app.getBScore();</span>
+<span class="nc" id="L31">        int c = app.getCScore();</span>
+<span class="nc" id="L32">        int d = app.getDScore();</span>
+<span class="nc bnc" id="L33" title="All 16 branches missed.">        if ((a &gt;= repairCost || b &gt;= repairCost || c &gt;= repairCost || d &gt;= repairCost) &amp;&amp; (a &gt; 0 || b &gt; 0 || c &gt; 0 || d &gt; 0)) {</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">            if (tank.getHealth() &lt; maxHealth) {</span>
+<span class="nc" id="L35">                tank.setHealth(Math.min(tank.getHealth() + 20, maxHealth));</span>
+<span class="nc" id="L36">                app.updateScore(tank.getTankName(), -repairCost);</span>
             }
         }
-<span class="fc" id="L38">    }</span>
+<span class="nc" id="L39">    }</span>
 
     /**
      * Buys additional fuel for a tank, increasing its fuel by 200 points if the player's score is sufficient.
      * @param tank The tank to refuel.
      */
     public void buyPetrol(Tank tank) { // increase the tanks fuel by 200 if the score is above 10
-<span class="fc" id="L45">        int a = app.getAScore();</span>
-<span class="fc" id="L46">        int b = app.getBScore();</span>
-<span class="fc" id="L47">        int c = app.getCScore();</span>
-<span class="fc" id="L48">        int d = app.getDScore();</span>
-<span class="pc bpc" id="L49" title="6 of 16 branches missed.">        if ((a &gt;= petrolCost || b &gt;= petrolCost || c &gt;= petrolCost || d &gt;= petrolCost) &amp;&amp; (a &gt; 0 || b &gt; 0 || c &gt; 0 || d &gt; 0)) {</span>
-<span class="fc" id="L50">            tank.setPetrol(tank.remainingPetrol() + morePetrol);</span>
-<span class="fc" id="L51">            app.updateScore(tank.getTankName(), -petrolCost);</span>
+<span class="nc" id="L46">        int a = app.getAScore();</span>
+<span class="nc" id="L47">        int b = app.getBScore();</span>
+<span class="nc" id="L48">        int c = app.getCScore();</span>
+<span class="nc" id="L49">        int d = app.getDScore();</span>
+<span class="nc bnc" id="L50" title="All 16 branches missed.">        if ((a &gt;= petrolCost || b &gt;= petrolCost || c &gt;= petrolCost || d &gt;= petrolCost) &amp;&amp; (a &gt; 0 || b &gt; 0 || c &gt; 0 || d &gt; 0)) {</span>
+<span class="nc" id="L51">            tank.setPetrol(tank.remainingPetrol() + morePetrol);</span>
+<span class="nc" id="L52">            app.updateScore(tank.getTankName(), -petrolCost);</span>
         }
-<span class="fc" id="L53">    }</span>
+<span class="nc" id="L54">    }</span>
 
     /**
      * Purchases an additional parachute for a tank if the player's score is sufficient.
      * @param tank The tank to receive the parachute.
      */
     public void buyChute(Tank tank) { // extension to buy a new parachute
-<span class="fc" id="L60">        int a = app.getAScore();</span>
-<span class="fc" id="L61">        int b = app.getBScore();</span>
-<span class="fc" id="L62">        int c = app.getCScore();</span>
-<span class="fc" id="L63">        int d = app.getDScore();</span>
-<span class="pc bpc" id="L64" title="6 of 16 branches missed.">        if ((a &gt;= chuteCost || b &gt;= chuteCost || c &gt;= chuteCost || d &gt;= chuteCost) &amp;&amp; (a &gt; 0 || b &gt; 0 || c &gt; 0 || d &gt; 0)) {</span>
-<span class="fc" id="L65">            tank.getParachute().setParachutes(tank.getParachute().getRemainingParachutes() + 1);</span>
-<span class="fc" id="L66">            app.updateScore(tank.getTankName(), -chuteCost);</span>
+<span class="nc" id="L61">        int a = app.getAScore();</span>
+<span class="nc" id="L62">        int b = app.getBScore();</span>
+<span class="nc" id="L63">        int c = app.getCScore();</span>
+<span class="nc" id="L64">        int d = app.getDScore();</span>
+<span class="nc bnc" id="L65" title="All 16 branches missed.">        if ((a &gt;= chuteCost || b &gt;= chuteCost || c &gt;= chuteCost || d &gt;= chuteCost) &amp;&amp; (a &gt; 0 || b &gt; 0 || c &gt; 0 || d &gt; 0)) {</span>
+<span class="nc" id="L66">            tank.getParachute().setParachutes(tank.getParachute().getRemainingParachutes() + 1);</span>
+<span class="nc" id="L67">            app.updateScore(tank.getTankName(), -chuteCost);</span>
         }
-<span class="fc" id="L68">    }</span>
+<span class="nc" id="L69">    }</span>
+
+    public void buyShield(Tank tank) {
+<span class="nc" id="L72">        int a = app.getAScore();</span>
+<span class="nc" id="L73">        int b = app.getBScore();</span>
+<span class="nc" id="L74">        int c = app.getCScore();</span>
+<span class="nc" id="L75">        int d = app.getDScore();</span>
+<span class="nc bnc" id="L76" title="All 16 branches missed.">        if ((a &gt;= shieldCost || b &gt;= shieldCost || c &gt;= shieldCost || d &gt;= shieldCost) &amp;&amp; (a &gt; 0 || b &gt; 0 || c &gt; 0 || d &gt; 0)) {</span>
+<span class="nc" id="L77">            tank.setShield(true);</span>
+<span class="nc" id="L78">            app.updateScore(tank.getTankName(), -shieldCost);</span>
+        }
+
+<span class="nc" id="L81">    }</span>
 
 }
 

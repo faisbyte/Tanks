@@ -11,7 +11,7 @@ public class Tank {
     private char tankName; // Identifier for the tank based on characters (A, B, C, D)
     private int posX; // X-coordinate position of the tank on the grid
     private float posY; // Y-coordinate position of the tank on the grid
-    private PApplet app; // Reference to the main Processing applet for drawing
+    private App app; // Reference to the main Processing applet for drawing
     private Terrain terrain; // Reference to the terrain for checking positions
     private Bomb bomb;  // Bomb associated with the tank
     private float speed; // Current speed of the tank
@@ -22,6 +22,7 @@ public class Tank {
     public int descentRate = 60; // Rate at which the tank descends when falling
     private Parachute parachute; // Parachute object for managing falls
     private boolean isFalling = false; // Flag to check if the tank is currently falling
+    private boolean shield = false; // Flag to check if the shield is active or not
     
     /**
      * Constructs a Tank object with specified settings.
@@ -30,7 +31,7 @@ public class Tank {
      * @param gridX The x-coordinate on the grid where the tank is initially placed.
      * @param gridY The y-coordinate on the grid where the tank is initially placed.
      */
-    public Tank(PApplet app, char tankName, int gridX, int gridY) {
+    public Tank(App app, char tankName, int gridX, int gridY) {
         this.app = app;
         this.tankName = tankName;
         this.posX = gridX * App.CELLSIZE;
@@ -80,6 +81,13 @@ public class Tank {
     }
 
     /**
+     * Set the value of Y co ordinate for the tank.
+     */
+    public void setPosY(int posY) {
+        this.posY = posY;
+    }
+
+    /**
      * Returns the Y positon of the tank.
      * @return The Y position.
      */
@@ -96,13 +104,35 @@ public class Tank {
     }
 
     /**
+     * Toggles the tank shield.
+     * @param active The boolean value.
+     */
+    public void setShield(boolean active) {
+        this.shield = active;
+    }
+
+    /**
+     * Returns the boolean value of whether or not the shield is active.
+     * @return The shield status.
+     */
+    public boolean isShieldActive() {
+        return shield;
+    }
+
+    /**
      * Inflicts damage on the tank, reducing its health.
      * @param amount The amount of damage to inflict.
      */
     public void damage(int amount) {
-        health -= amount;
-        if (health < 0) {
-            health = 0;
+        if (this.isShieldActive() == true) {
+            amount = 0;
+            this.setShield(false);
+        }
+        else {
+            health -= amount;
+            if (health < 0) {
+                health = 0;
+            }
         }
     }
 
