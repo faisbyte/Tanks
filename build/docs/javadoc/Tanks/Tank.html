@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10,"i4":10,"i5":10,"i6":10,"i7":10,"i8":10,"i9":10,"i10":10,"i11":10,"i12":10,"i13":10,"i14":10,"i15":10,"i16":10,"i17":10,"i18":10,"i19":10,"i20":10,"i21":10,"i22":10,"i23":10,"i24":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -136,6 +136,10 @@ extends java.lang.Object</pre>
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../Tanks/Tank.html#petrol">petrol</a></span></code>&nbsp;</td>
 </tr>
+<tr class="altColor">
+<td class="colFirst"><code>int</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../Tanks/Tank.html#powerLevel">powerLevel</a></span></code>&nbsp;</td>
+</tr>
 </table>
 </li>
 </ul>
@@ -151,7 +155,7 @@ extends java.lang.Object</pre>
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><span class="memberNameLink"><a href="../Tanks/Tank.html#Tank-processing.core.PApplet-char-int-int-">Tank</a></span>(processing.core.PApplet&nbsp;app,
+<td class="colOne"><code><span class="memberNameLink"><a href="../Tanks/Tank.html#Tank-Tanks.App-char-int-int-">Tank</a></span>(<a href="../Tanks/App.html" title="class in Tanks">App</a>&nbsp;app,
     char&nbsp;tankName,
     int&nbsp;gridX,
     int&nbsp;gridY)</code>
@@ -258,48 +262,66 @@ extends java.lang.Object</pre>
 </td>
 </tr>
 <tr id="i14" class="altColor">
+<td class="colFirst"><code>boolean</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../Tanks/Tank.html#isShieldActive--">isShieldActive</a></span>()</code>
+<div class="block">Returns the boolean value of whether or not the shield is active.</div>
+</td>
+</tr>
+<tr id="i15" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../Tanks/Tank.html#petrolOver-int-">petrolOver</a></span>(int&nbsp;distance)</code>
 <div class="block">Calculates the amount of petrol consumed on the distance travelled.</div>
 </td>
 </tr>
-<tr id="i15" class="rowColor">
+<tr id="i16" class="altColor">
 <td class="colFirst"><code>int</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../Tanks/Tank.html#remainingPetrol--">remainingPetrol</a></span>()</code>
 <div class="block">Returns the amount of petrol left for the tank.</div>
 </td>
 </tr>
-<tr id="i16" class="altColor">
+<tr id="i17" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../Tanks/Tank.html#setDescentRate-int-">setDescentRate</a></span>(int&nbsp;rate)</code>
 <div class="block">Sets the rate the tank falls down when the terrain below it is destroyed.</div>
 </td>
 </tr>
-<tr id="i17" class="rowColor">
+<tr id="i18" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../Tanks/Tank.html#setHealth-int-">setHealth</a></span>(int&nbsp;health)</code>
 <div class="block">Sets the health for the current tank.</div>
 </td>
 </tr>
-<tr id="i18" class="altColor">
+<tr id="i19" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../Tanks/Tank.html#setPetrol-int-">setPetrol</a></span>(int&nbsp;petrol)</code>
 <div class="block">Sets the fuel for the tank.</div>
 </td>
 </tr>
-<tr id="i19" class="rowColor">
+<tr id="i20" class="altColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../Tanks/Tank.html#setPosY-int-">setPosY</a></span>(int&nbsp;posY)</code>
+<div class="block">Set the value of Y co ordinate for the tank.</div>
+</td>
+</tr>
+<tr id="i21" class="rowColor">
+<td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../Tanks/Tank.html#setShield-boolean-">setShield</a></span>(boolean&nbsp;active)</code>
+<div class="block">Toggles the tank shield.</div>
+</td>
+</tr>
+<tr id="i22" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../Tanks/Tank.html#setSpeed-float-">setSpeed</a></span>(float&nbsp;speed)</code>
 <div class="block">Sets the speed for the tank.</div>
 </td>
 </tr>
-<tr id="i20" class="altColor">
+<tr id="i23" class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../Tanks/Tank.html#setTurretAngle-float-">setTurretAngle</a></span>(float&nbsp;angle)</code>
 <div class="block">Sets the angle of the turret for the tank.</div>
 </td>
 </tr>
-<tr id="i21" class="rowColor">
+<tr id="i24" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../Tanks/Tank.html#update--">update</a></span>()</code>
 <div class="block">Updates the tank's state, checking for mid-air conditions and managing parachute deployment.</div>
@@ -336,6 +358,15 @@ extends java.lang.Object</pre>
 <pre>public&nbsp;int petrol</pre>
 </li>
 </ul>
+<a name="powerLevel">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>powerLevel</h4>
+<pre>public&nbsp;int powerLevel</pre>
+</li>
+</ul>
 <a name="descentRate">
 <!--   -->
 </a>
@@ -353,13 +384,13 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Constructor Detail</h3>
-<a name="Tank-processing.core.PApplet-char-int-int-">
+<a name="Tank-Tanks.App-char-int-int-">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>Tank</h4>
-<pre>public&nbsp;Tank(processing.core.PApplet&nbsp;app,
+<pre>public&nbsp;Tank(<a href="../Tanks/App.html" title="class in Tanks">App</a>&nbsp;app,
             char&nbsp;tankName,
             int&nbsp;gridX,
             int&nbsp;gridY)</pre>
@@ -429,6 +460,16 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
+<a name="setPosY-int-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setPosY</h4>
+<pre>public&nbsp;void&nbsp;setPosY(int&nbsp;posY)</pre>
+<div class="block">Set the value of Y co ordinate for the tank.</div>
+</li>
+</ul>
 <a name="getPosY--">
 <!--   -->
 </a>
@@ -454,6 +495,34 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="returnLabel">Returns:</span></dt>
 <dd>The tank character.</dd>
+</dl>
+</li>
+</ul>
+<a name="setShield-boolean-">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>setShield</h4>
+<pre>public&nbsp;void&nbsp;setShield(boolean&nbsp;active)</pre>
+<div class="block">Toggles the tank shield.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>active</code> - The boolean value.</dd>
+</dl>
+</li>
+</ul>
+<a name="isShieldActive--">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isShieldActive</h4>
+<pre>public&nbsp;boolean&nbsp;isShieldActive()</pre>
+<div class="block">Returns the boolean value of whether or not the shield is active.</div>
+<dl>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>The shield status.</dd>
 </dl>
 </li>
 </ul>

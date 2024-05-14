@@ -42,24 +42,24 @@ public class Parachute {
      * Updates the status of the parachute during the game loop, handling deployment and free fall effects.
      */
     public void updateParachute() {
-<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if (isTankInMidair()) {</span>
-<span class="pc bpc" id="L46" title="2 of 4 branches missed.">            if (remainingParachutes &gt; 0 &amp;&amp; !isDeployed) {</span>
-<span class="fc" id="L47">                deployParachute();</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        if (isTankInMidair()) {</span>
+<span class="nc bnc" id="L46" title="All 4 branches missed.">            if (remainingParachutes &gt; 0 &amp;&amp; !isDeployed) {</span>
+<span class="nc" id="L47">                deployParachute();</span>
             } else {
 <span class="nc" id="L49">                handleFreeFall();</span>
             }
         } else {
 <span class="nc" id="L52">            resetParachute();</span>
         }
-<span class="fc" id="L54">    }</span>
+<span class="nc" id="L54">    }</span>
 
     /**
      * Checks if the associated tank is currently in midair above the terrain.
      * @return true if the tank is in midair, false otherwise.
      */
     public boolean isTankInMidair() {
-<span class="fc" id="L61">        float terrainHeight = tank.getTerrain().getYc(tank.getPosX() + 15);</span>
-<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        return tank.getPosY() &gt; terrainHeight;</span>
+<span class="nc" id="L61">        float terrainHeight = tank.getTerrain().getYc(tank.getPosX() + 15);</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        return tank.getPosY() &gt; terrainHeight;</span>
     }
 
     /**
@@ -68,8 +68,8 @@ public class Parachute {
     public void deployParachute() {
 <span class="fc" id="L69">        isDeployed = true;</span>
 <span class="fc" id="L70">        remainingParachutes--;</span>
-<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        if (remainingParachutes &lt; 0) {</span>
-<span class="nc" id="L72">            remainingParachutes = 0;</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (remainingParachutes &lt; 0) {</span>
+<span class="fc" id="L72">            remainingParachutes = 0;</span>
         }
 <span class="fc" id="L74">        tank.setDescentRate(descentRateWithParachute);</span>
 <span class="fc" id="L75">        System.out.println(remainingParachutes);</span>
@@ -79,25 +79,25 @@ public class Parachute {
      * Handles the tank's free fall when no parachute is deployed, applying damage based on the fall speed.
      */
     public void handleFreeFall() {
-<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (!isDeployed) {</span>
-<span class="fc" id="L83">            tank.setDescentRate(descentRateWithoutParachute);</span>
-<span class="fc" id="L84">            tank.damage(damagePerPixel * (descentRateWithoutParachute / App.FPS));</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (!isDeployed) {</span>
+<span class="nc" id="L83">            tank.setDescentRate(descentRateWithoutParachute);</span>
+<span class="nc" id="L84">            tank.damage(damagePerPixel * (descentRateWithoutParachute / App.FPS));</span>
         }
-<span class="fc" id="L86">    }</span>
+<span class="nc" id="L86">    }</span>
 
     /**
      * Resets the parachute when the tank is no longer in midair, preparing it for potential redeployment.
      */
     public void resetParachute() {
-<span class="fc" id="L92">        isDeployed = false;</span>
-<span class="fc" id="L93">        tank.setDescentRate(0);</span>
-<span class="fc" id="L94">    }</span>
+<span class="nc" id="L92">        isDeployed = false;</span>
+<span class="nc" id="L93">        tank.setDescentRate(0);</span>
+<span class="nc" id="L94">    }</span>
 
     /**
      * Displays the parachute image above the tank when deployed.
      */
     public void displayParachute() {
-<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (isDeployed) {</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">        if (isDeployed) {</span>
 <span class="fc" id="L101">            app.image(chute, tank.getPosX() - 15, tank.getPosY() - 60); // Adjust positioning as necessary</span>
         }
 <span class="fc" id="L103">    }</span>

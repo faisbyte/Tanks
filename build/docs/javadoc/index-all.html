@@ -126,6 +126,10 @@
 <dd>
 <div class="block">Buys additional fuel for a tank, increasing its fuel by 200 points if the player's score is sufficient.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="Tanks/Powerups.html#buyShield-Tanks.Tank-">buyShield(Tank)</a></span> - Method in class Tanks.<a href="Tanks/Powerups.html" title="class in Tanks">Powerups</a></dt>
+<dd>
+<div class="block">Purchases shield for the tank if the player's score is sufficient.</div>
+</dd>
 </dl>
 <a name="I:C">
 <!--   -->
@@ -139,6 +143,8 @@
 <dt><span class="memberNameLink"><a href="Tanks/App.html#CELLSIZE">CELLSIZE</a></span> - Static variable in class Tanks.<a href="Tanks/App.html" title="class in Tanks">App</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="Tanks/App.html#configPath">configPath</a></span> - Variable in class Tanks.<a href="Tanks/App.html" title="class in Tanks">App</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="Tanks/App.html#currentLevel">currentLevel</a></span> - Variable in class Tanks.<a href="Tanks/App.html" title="class in Tanks">App</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="Tanks/App.html#currentTankIndex">currentTankIndex</a></span> - Variable in class Tanks.<a href="Tanks/App.html" title="class in Tanks">App</a></dt>
 <dd>&nbsp;</dd>
@@ -197,6 +203,10 @@
 <dt><span class="memberNameLink"><a href="Tanks/Parachute.html#displayParachute--">displayParachute()</a></span> - Method in class Tanks.<a href="Tanks/Parachute.html" title="class in Tanks">Parachute</a></dt>
 <dd>
 <div class="block">Displays the parachute image above the tank when deployed.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="Tanks/HUD.html#displayShield-Tanks.Tank-">displayShield(Tank)</a></span> - Method in class Tanks.<a href="Tanks/HUD.html" title="class in Tanks">HUD</a></dt>
+<dd>
+<div class="block">Displays the status of the shield of the tank.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="Tanks/Tank.html#displayTanks--">displayTanks()</a></span> - Method in class Tanks.<a href="Tanks/Tank.html" title="class in Tanks">Tank</a></dt>
 <dd>
@@ -345,7 +355,7 @@
 <div class="block">Handles the display of various heads-up display (HUD) elements in the Tanks game,
  such as health bars, fuel icons, parachutes, and game-ending messages.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="Tanks/HUD.html#HUD-processing.core.PApplet-">HUD(PApplet)</a></span> - Constructor for class Tanks.<a href="Tanks/HUD.html" title="class in Tanks">HUD</a></dt>
+<dt><span class="memberNameLink"><a href="Tanks/HUD.html#HUD-Tanks.App-">HUD(App)</a></span> - Constructor for class Tanks.<a href="Tanks/HUD.html" title="class in Tanks">HUD</a></dt>
 <dd>
 <div class="block">Constructor for HUD class.</div>
 </dd>
@@ -370,6 +380,10 @@
 <dt><span class="memberNameLink"><a href="Tanks/Parachute.html#isDeployed--">isDeployed()</a></span> - Method in class Tanks.<a href="Tanks/Parachute.html" title="class in Tanks">Parachute</a></dt>
 <dd>
 <div class="block">Returns the deployment status of the parachute.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="Tanks/Tank.html#isShieldActive--">isShieldActive()</a></span> - Method in class Tanks.<a href="Tanks/Tank.html" title="class in Tanks">Tank</a></dt>
+<dd>
+<div class="block">Returns the boolean value of whether or not the shield is active.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="Tanks/Parachute.html#isTankInMidair--">isTankInMidair()</a></span> - Method in class Tanks.<a href="Tanks/Parachute.html" title="class in Tanks">Parachute</a></dt>
 <dd>
@@ -402,6 +416,10 @@
 <dt><span class="memberNameLink"><a href="Tanks/Terrain.html#loadTerrain-java.lang.String-">loadTerrain(String)</a></span> - Method in class Tanks.<a href="Tanks/Terrain.html" title="class in Tanks">Terrain</a></dt>
 <dd>
 <div class="block">Loads and processes terrain data from a file.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="Tanks/Terrain.html#loadTreeImage--">loadTreeImage()</a></span> - Method in class Tanks.<a href="Tanks/Terrain.html" title="class in Tanks">Terrain</a></dt>
+<dd>
+<div class="block">Loads the tree image based on the current level.</div>
 </dd>
 </dl>
 <a name="I:M">
@@ -437,6 +455,8 @@
 <dd>
 <div class="block">Calculates the amount of petrol consumed on the distance travelled.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="Tanks/Tank.html#powerLevel">powerLevel</a></span> - Variable in class Tanks.<a href="Tanks/Tank.html" title="class in Tanks">Tank</a></dt>
+<dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="Tanks/App.html#powerup">powerup</a></span> - Variable in class Tanks.<a href="Tanks/App.html" title="class in Tanks">App</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="Tanks/Powerups.html" title="class in Tanks"><span class="typeNameLink">Powerups</span></a> - Class in <a href="Tanks/package-summary.html">Tanks</a></dt>
@@ -473,9 +493,25 @@
 </a>
 <h2 class="title">S</h2>
 <dl>
+<dt><span class="memberNameLink"><a href="Tanks/App.html#setAScore-int-">setAScore(int)</a></span> - Method in class Tanks.<a href="Tanks/App.html" title="class in Tanks">App</a></dt>
+<dd>
+<div class="block">Sets the score for player A.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="Tanks/App.html#setBScore-int-">setBScore(int)</a></span> - Method in class Tanks.<a href="Tanks/App.html" title="class in Tanks">App</a></dt>
+<dd>
+<div class="block">Sets the score for player B.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="Tanks/App.html#setCScore-int-">setCScore(int)</a></span> - Method in class Tanks.<a href="Tanks/App.html" title="class in Tanks">App</a></dt>
+<dd>
+<div class="block">Sets the score for player C.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="Tanks/Tank.html#setDescentRate-int-">setDescentRate(int)</a></span> - Method in class Tanks.<a href="Tanks/Tank.html" title="class in Tanks">Tank</a></dt>
 <dd>
 <div class="block">Sets the rate the tank falls down when the terrain below it is destroyed.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="Tanks/App.html#setDScore-int-">setDScore(int)</a></span> - Method in class Tanks.<a href="Tanks/App.html" title="class in Tanks">App</a></dt>
+<dd>
+<div class="block">Sets the score for player D.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="Tanks/Tank.html#setHealth-int-">setHealth(int)</a></span> - Method in class Tanks.<a href="Tanks/Tank.html" title="class in Tanks">Tank</a></dt>
 <dd>
@@ -488,6 +524,14 @@
 <dt><span class="memberNameLink"><a href="Tanks/Tank.html#setPetrol-int-">setPetrol(int)</a></span> - Method in class Tanks.<a href="Tanks/Tank.html" title="class in Tanks">Tank</a></dt>
 <dd>
 <div class="block">Sets the fuel for the tank.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="Tanks/Tank.html#setPosY-int-">setPosY(int)</a></span> - Method in class Tanks.<a href="Tanks/Tank.html" title="class in Tanks">Tank</a></dt>
+<dd>
+<div class="block">Set the value of Y co ordinate for the tank.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="Tanks/Tank.html#setShield-boolean-">setShield(boolean)</a></span> - Method in class Tanks.<a href="Tanks/Tank.html" title="class in Tanks">Tank</a></dt>
+<dd>
+<div class="block">Toggles the tank shield.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="Tanks/Tank.html#setSpeed-float-">setSpeed(float)</a></span> - Method in class Tanks.<a href="Tanks/Tank.html" title="class in Tanks">Tank</a></dt>
 <dd>
@@ -505,6 +549,14 @@
 <dd>
 <div class="block">Load all resources such as images.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="Tanks/Bomb.html#setX-float-">setX(float)</a></span> - Method in class Tanks.<a href="Tanks/Bomb.html" title="class in Tanks">Bomb</a></dt>
+<dd>
+<div class="block">Sets the X co ordinate for the bomb.</div>
+</dd>
+<dt><span class="memberNameLink"><a href="Tanks/Bomb.html#setY-float-">setY(float)</a></span> - Method in class Tanks.<a href="Tanks/Bomb.html" title="class in Tanks">Bomb</a></dt>
+<dd>
+<div class="block">Sets the Y co ordinate for the bomb.</div>
+</dd>
 </dl>
 <a name="I:T">
 <!--   -->
@@ -515,7 +567,7 @@
 <dd>
 <div class="block">Represents a tank in the game, managing its position, health, fuel, power level, and interactions with terrain and other game elements.</div>
 </dd>
-<dt><span class="memberNameLink"><a href="Tanks/Tank.html#Tank-processing.core.PApplet-char-int-int-">Tank(PApplet, char, int, int)</a></span> - Constructor for class Tanks.<a href="Tanks/Tank.html" title="class in Tanks">Tank</a></dt>
+<dt><span class="memberNameLink"><a href="Tanks/Tank.html#Tank-Tanks.App-char-int-int-">Tank(App, char, int, int)</a></span> - Constructor for class Tanks.<a href="Tanks/Tank.html" title="class in Tanks">Tank</a></dt>
 <dd>
 <div class="block">Constructs a Tank object with specified settings.</div>
 </dd>
@@ -602,6 +654,10 @@
 <dd>
 <div class="block">Constructs a Wind object with a random initial wind speed and loads related images.</div>
 </dd>
+<dt><span class="memberNameLink"><a href="Tanks/Wind.html#windSpeed">windSpeed</a></span> - Variable in class Tanks.<a href="Tanks/Wind.html" title="class in Tanks">Wind</a></dt>
+<dd>&nbsp;</dd>
+<dt><span class="memberNameLink"><a href="Tanks/HUD.html#winner">winner</a></span> - Variable in class Tanks.<a href="Tanks/HUD.html" title="class in Tanks">HUD</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:K">K</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:W">W</a>&nbsp;</div>
 <!-- ======= START OF BOTTOM NAVBAR ====== -->

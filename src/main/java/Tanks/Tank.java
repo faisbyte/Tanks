@@ -35,7 +35,7 @@ public class Tank {
         this.app = app;
         this.tankName = tankName;
         this.posX = gridX * App.CELLSIZE;
-        this.posY =  Math.round(terrain.getYc(gridX + 15));
+        this.posY =  Math.round(Terrain.getYc(gridX + 15));
         this.turretAngle = PApplet.HALF_PI; 
         this.parachute = new Parachute(this, app);
     }
@@ -117,6 +117,14 @@ public class Tank {
      */
     public boolean isShieldActive() {
         return shield;
+    }
+
+    /**
+     * Method to set the terrain for the tank. (Only for testing purposes)
+     * @param terrain The terrain.
+     */
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
     }
 
     /**

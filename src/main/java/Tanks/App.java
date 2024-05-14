@@ -3,7 +3,6 @@ package Tanks;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.event.KeyEvent;
-import processing.event.MouseEvent; 
 
 import java.util.*;
 
@@ -52,7 +51,7 @@ public class App extends PApplet {
     // Level management
     public int currentLevel = 1;
     private final int maxLevel = 3;
-    private boolean gameEnded = false;
+    public boolean gameEnded = false;
 
     // Configurations
     public String configPath; // Path to the configuration file, not used in current implementation
@@ -378,18 +377,6 @@ public class App extends PApplet {
         } else if (event.getKeyCode() == DOWN) {
             downPressed = false;
         }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        //TODO - powerups, like repair and extra fuel and teleport? - or maybe leave this as an extension
-
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
     }
 
     /**

@@ -17,7 +17,7 @@
     catch(err) {
     }
 //-->
-var methods = {"i0":10,"i1":10,"i2":10};
+var methods = {"i0":10,"i1":10,"i2":10,"i3":10};
 var tabs = {65535:["t0","All Methods"],2:["t2","Instance Methods"],8:["t4","Concrete Methods"]};
 var altColor = "altColor";
 var rowColor = "rowColor";
@@ -160,6 +160,12 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>void</code></td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../Tanks/Powerups.html#buyShield-Tanks.Tank-">buyShield</a></span>(<a href="../Tanks/Tank.html" title="class in Tanks">Tank</a>&nbsp;tank)</code>
+<div class="block">Purchases shield for the tank if the player's score is sufficient.</div>
+</td>
+</tr>
+<tr id="i3" class="rowColor">
+<td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../Tanks/Powerups.html#repairTank-Tanks.Tank-">repairTank</a></span>(<a href="../Tanks/Tank.html" title="class in Tanks">Tank</a>&nbsp;tank)</code>
 <div class="block">Repairs a tank, increasing its health by 20 points if the player's score is sufficient.</div>
 </td>
@@ -239,7 +245,7 @@ extends java.lang.Object</pre>
 <a name="buyChute-Tanks.Tank-">
 <!--   -->
 </a>
-<ul class="blockListLast">
+<ul class="blockList">
 <li class="blockList">
 <h4>buyChute</h4>
 <pre>public&nbsp;void&nbsp;buyChute(<a href="../Tanks/Tank.html" title="class in Tanks">Tank</a>&nbsp;tank)</pre>
@@ -247,6 +253,20 @@ extends java.lang.Object</pre>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>tank</code> - The tank to receive the parachute.</dd>
+</dl>
+</li>
+</ul>
+<a name="buyShield-Tanks.Tank-">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>buyShield</h4>
+<pre>public&nbsp;void&nbsp;buyShield(<a href="../Tanks/Tank.html" title="class in Tanks">Tank</a>&nbsp;tank)</pre>
+<div class="block">Purchases shield for the tank if the player's score is sufficient.</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>tank</code> - The tank whose shielf activates.</dd>
 </dl>
 </li>
 </ul>

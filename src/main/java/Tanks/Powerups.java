@@ -67,7 +67,11 @@ public class Powerups {
             app.updateScore(tank.getTankName(), -chuteCost);
         }
     }
-
+    
+    /**
+     * Purchases shield for the tank if the player's score is sufficient.
+     * @param tank The tank whose shielf activates.
+     */
     public void buyShield(Tank tank) {
         int a = app.getAScore();
         int b = app.getBScore();
