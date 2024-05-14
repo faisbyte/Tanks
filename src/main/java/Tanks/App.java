@@ -6,6 +6,8 @@ import processing.event.KeyEvent;
 
 import java.util.*;
 
+import org.json.JSONObject;
+
 /**
  * The main application class for the tank game, managing game initialization,
  * input handling, game state updates, and rendering.
@@ -55,6 +57,7 @@ public class App extends PApplet {
 
     // Configurations
     public String configPath; // Path to the configuration file, not used in current implementation
+    public processing.data.JSONObject jsonData;
 
 	
 	// Feel free to add any additional methods or attributes you want. Please put classes in different files.
@@ -100,15 +103,18 @@ public class App extends PApplet {
         String backgroundImageFile = "";
         if (level == 1) {
             terrainFile = "level1.txt";
-            backgroundImageFile = "src/main/resources/Tanks/snow.png";
+            String backgroundImageFileUrl = jsonData.getJSONArray("levels").getJSONObject(level - 1).getString("background");
+            backgroundImageFile = getClass().getResource(backgroundImageFileUrl).getPath().replace("%20", " ");
         }
         else if (level == 2) {
             terrainFile = "level2.txt";
-            backgroundImageFile = "src/main/resources/Tanks/desert.png";
+            String backgroundImageFileUrl = jsonData.getJSONArray("levels").getJSONObject(level - 1).getString("background");
+            backgroundImageFile = getClass().getResource(backgroundImageFileUrl).getPath().replace("%20", " ");
         }
         else if (level == 3) {
             terrainFile = "level3.txt";
-            backgroundImageFile = "src/main/resources/Tanks/basic.png";
+            String backgroundImageFileUrl = jsonData.getJSONArray("levels").getJSONObject(level - 1).getString("background");
+            backgroundImageFile = getClass().getResource(backgroundImageFileUrl).getPath().replace("%20", " ");
         }
         Terrain.tankAX.clear();
         Terrain.tankBX.clear();
@@ -157,6 +163,7 @@ public class App extends PApplet {
      */
 	@Override
     public void setup() {
+        jsonData = loadJSONObject(configPath);
         frameRate(FPS);
         loadLevel(currentLevel);
         hud = new HUD(this);

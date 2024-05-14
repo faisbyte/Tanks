@@ -138,9 +138,9 @@ public class SampleTest {
     public void testTerrainLoadingForDifferentLevels() {
         App app = new App();
         PApplet.runSketch(new String[] {"Tanks"}, app);
-        // app.setup();
+        app.setup();
         app.loadLevel(1);
-        assertNotNull(app.terrain, "Terrain should be initialized when level 1 is loaded.");
+        assertNotNull(app.terrain, "Terrain should be initialized when level one is loaded.");
         app.loadLevel(2); 
         assertNotNull(app.terrain, "Terrain should be initialized when level 2 is loaded.");
         app.loadLevel(3);

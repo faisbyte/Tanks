@@ -29,7 +29,7 @@
 </td>
 <td>
 <div class="infoBox" id="failures">
-<div class="counter">6</div>
+<div class="counter">5</div>
 <p>failures</p>
 </div>
 </td>
@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">2.381s</div>
+<div class="counter">2.203s</div>
 <p>duration</p>
 </div>
 </td>
@@ -51,7 +51,7 @@
 </td>
 <td>
 <div class="infoBox failures" id="successRate">
-<div class="percent">70%</div>
+<div class="percent">75%</div>
 <p>successful</p>
 </div>
 </td>
@@ -390,12 +390,18 @@ Mocking methods declared on non-public parent classes is not supported.
 <a name="testForParachutes()"></a>
 <h3 class="failures">testForParachutes()</h3>
 <span class="code">
-<pre>java.lang.ArrayIndexOutOfBoundsException: -1
-	at java.util.ArrayList.elementData(ArrayList.java:424)
-	at java.util.ArrayList.get(ArrayList.java:437)
-	at Tanks.Terrain.getYc(Terrain.java:55)
-	at Tanks.Tank.&lt;init&gt;(Tank.java:38)
-	at Tanks.SampleTest.testForParachutes(SampleTest.java:698)
+<pre>org.mockito.exceptions.misusing.MissingMethodInvocationException: 
+when() requires an argument which has to be 'a method call on a mock'.
+For example:
+    when(mock.getArticles()).thenReturn(articles);
+
+Also, this error might show up because:
+1. you stub either of: final/private/equals()/hashCode() methods.
+   Those methods *cannot* be stubbed/verified.
+   Mocking methods declared on non-public parent classes is not supported.
+2. inside when() you don't call method on mock but on some other object.
+
+	at Tanks.SampleTest.testForParachutes(SampleTest.java:703)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -480,14 +486,6 @@ Mocking methods declared on non-public parent classes is not supported.
 	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:65)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
-</pre>
-</span>
-</div>
-<div class="test">
-<a name="testTerrainLoadingForDifferentLevels()"></a>
-<h3 class="failures">testTerrainLoadingForDifferentLevels()</h3>
-<span class="code">
-<pre>java.lang.ArrayIndexOutOfBoundsException
 </pre>
 </span>
 </div>
@@ -601,102 +599,102 @@ Mocking methods declared on non-public parent classes is not supported.
 </thead>
 <tr>
 <td class="success">appTest()</td>
-<td class="success">0.094s</td>
+<td class="success">0.078s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">bombTests()</td>
-<td class="success">0.059s</td>
+<td class="success">0.053s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="failures">powerupTests()</td>
-<td class="failures">0.084s</td>
+<td class="failures">0.059s</td>
 <td class="failures">failed</td>
 </tr>
 <tr>
 <td class="success">testCorrectWinnerAnnouncement()</td>
-<td class="success">0.070s</td>
+<td class="success">0.064s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="failures">testDestroyTankFunctionality()</td>
-<td class="failures">0.438s</td>
+<td class="failures">0.151s</td>
 <td class="failures">failed</td>
 </tr>
 <tr>
 <td class="failures">testDisplayShield()</td>
-<td class="failures">0.604s</td>
+<td class="failures">0.635s</td>
 <td class="failures">failed</td>
 </tr>
 <tr>
 <td class="success">testDisplayWind()</td>
-<td class="success">0.040s</td>
+<td class="success">0.036s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testForDamage()</td>
-<td class="success">0.082s</td>
+<td class="success">0.056s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="failures">testForParachutes()</td>
-<td class="failures">0.315s</td>
+<td class="failures">0.572s</td>
 <td class="failures">failed</td>
 </tr>
 <tr>
 <td class="success">testForWeirdPowerLevel()</td>
-<td class="success">0.072s</td>
+<td class="success">0.037s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testGetSpeed()</td>
-<td class="success">0.057s</td>
+<td class="success">0.056s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testIncreasePowerAdjustsToMaxHealth()</td>
-<td class="success">0.040s</td>
+<td class="success">0.051s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testIncreasePowerDoesNotExceedHealth()</td>
-<td class="success">0.056s</td>
+<td class="success">0.044s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testPlayerScoreInitialization()</td>
-<td class="success">0.011s</td>
+<td class="success">0.012s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
-<td class="failures">testTerrainLoadingForDifferentLevels()</td>
-<td class="failures">0.075s</td>
-<td class="failures">failed</td>
+<td class="success">testTerrainLoadingForDifferentLevels()</td>
+<td class="success">0.145s</td>
+<td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testTree2()</td>
-<td class="success">0.067s</td>
+<td class="success">0.052s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testUpdateWind()</td>
-<td class="success">0.045s</td>
+<td class="success">0.039s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testWindInitialization()</td>
-<td class="success">0.075s</td>
+<td class="success">0.022s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">testforfuel()</td>
-<td class="success">0.056s</td>
+<td class="success">0.025s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="failures">turretAngleTest()</td>
-<td class="failures">0.041s</td>
+<td class="failures">0.016s</td>
 <td class="failures">failed</td>
 </tr>
 </table>
@@ -736,28 +734,6 @@ Mocking methods declared on non-public parent classes is not supported.
 2
 2
 2
-1
-1
-1
-1
-1
-1
-1
-1
-1
-1
-2
-2
-2
-2
-2
-2
-2
-2
-1
-1
-1
-2
 2
 2
 2
@@ -774,26 +750,27 @@ Mocking methods declared on non-public parent classes is not supported.
 2
 1
 1
-2
-2
-0
-0
-0
-2
-1
 1
 1
 2
 2
 2
-0
-0
-0
-0
-0
-0
-0
-0
+2
+1
+2
+2
+2
+2
+2
+2
+2
+2
+1
+1
+1
+1
+1
+2
 0
 2
 2
@@ -801,68 +778,9 @@ Mocking methods declared on non-public parent classes is not supported.
 2
 2
 2
-2
-2
-2
-2
-1
-1
-1
-1
-1
-2
-2
-0
-2
-0
-1
-1
-1
-1
-1
-1
-1
-1
-1
-0
-0
-1
-0
-1
-1
 0
 0
 0
-0
-0
-0
-1
-1
-1
-0
-0
-1
-2
-2
-2
-2
-2
-2
-2
-2
-2
-2
-2
-2
-2
-2
-2
-2
-1
-1
-1
-1
-2
 2
 2
 </pre>
@@ -871,105 +789,19 @@ Mocking methods declared on non-public parent classes is not supported.
 <div id="tab3" class="tab">
 <h2>Standard error</h2>
 <span class="code">
-<pre>Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-java.lang.NullPointerException
-	at Tanks.Terrain.displayTerrain(Terrain.java:157)
-	at Tanks.App.draw(App.java:391)
+<pre>java.lang.NullPointerException
+	at processing.awt.PGraphicsJava2D.imageImpl(PGraphicsJava2D.java:1574)
+	at processing.core.PGraphics.image(PGraphics.java:3817)
+	at processing.core.PGraphics.image(PGraphics.java:3791)
+	at processing.core.PApplet.image(PApplet.java:12621)
+	at Tanks.Wind.displayWind(Wind.java:55)
+	at Tanks.App.draw(App.java:461)
 	at processing.core.PApplet.handleDraw(PApplet.java:2426)
 	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
 	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 0
 java.lang.NullPointerException
 	at Tanks.Terrain.displayTerrain(Terrain.java:157)
-	at Tanks.App.draw(App.java:391)
-	at processing.core.PApplet.handleDraw(PApplet.java:2426)
-	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
-	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-java.lang.NullPointerException
-	at Tanks.Terrain.displayTerrain(Terrain.java:157)
-	at Tanks.App.draw(App.java:391)
-	at processing.core.PApplet.handleDraw(PApplet.java:2426)
-	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
-	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-java.lang.NullPointerException
-	at Tanks.Terrain.displayTerrain(Terrain.java:157)
-	at Tanks.App.draw(App.java:391)
-	at processing.core.PApplet.handleDraw(PApplet.java:2426)
-	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
-	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 4
-java.lang.NullPointerException
-	at Tanks.Terrain.getYc(Terrain.java:55)
-	at Tanks.Tank.tankA(Tank.java:300)
-	at Tanks.Tank.displayTanks(Tank.java:279)
-	at Tanks.App.draw(App.java:414)
-	at processing.core.PApplet.handleDraw(PApplet.java:2426)
-	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
-	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 4
-Tank at invalid index (draw function): 0
-Tank at invalid index (draw function): 4
-java.lang.NullPointerException
-	at Tanks.Terrain.displayTerrain(Terrain.java:157)
-	at Tanks.App.draw(App.java:391)
+	at Tanks.App.draw(App.java:398)
 	at processing.core.PApplet.handleDraw(PApplet.java:2426)
 	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
 	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
@@ -977,48 +809,144 @@ java.util.ConcurrentModificationException
 	at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:911)
 	at java.util.ArrayList$Itr.next(ArrayList.java:861)
 	at Tanks.Terrain.displayTerrain(Terrain.java:160)
-	at Tanks.App.draw(App.java:391)
+	at Tanks.App.draw(App.java:398)
+	at processing.core.PApplet.handleDraw(PApplet.java:2426)
+	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
+	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 0
+java.lang.NullPointerException
+	at Tanks.Terrain.displayTerrain(Terrain.java:157)
+	at Tanks.App.draw(App.java:398)
+	at processing.core.PApplet.handleDraw(PApplet.java:2426)
+	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
+	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
+Tank at invalid index (draw function): 0
+java.lang.IndexOutOfBoundsException: Index: 111, Size: 1728
+	at java.util.ArrayList.rangeCheck(ArrayList.java:659)
+	at java.util.ArrayList.get(ArrayList.java:435)
+	at Tanks.Terrain.displayTerrain(Terrain.java:161)
+	at Tanks.App.draw(App.java:398)
+	at processing.core.PApplet.handleDraw(PApplet.java:2426)
+	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
+	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 0
+java.util.ConcurrentModificationException
+	at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:911)
+	at java.util.ArrayList$Itr.next(ArrayList.java:861)
+	at Tanks.Terrain.displayTerrain(Terrain.java:160)
+	at Tanks.App.draw(App.java:398)
+	at processing.core.PApplet.handleDraw(PApplet.java:2426)
+	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
+	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
+java.util.ConcurrentModificationException
+	at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:911)
+	at java.util.ArrayList$Itr.next(ArrayList.java:861)
+	at Tanks.Terrain.displayTerrain(Terrain.java:160)
+	at Tanks.App.draw(App.java:398)
+	at processing.core.PApplet.handleDraw(PApplet.java:2426)
+	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
+	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 0
+java.lang.IndexOutOfBoundsException: Index: 111, Size: 1624
+	at java.util.ArrayList.rangeCheck(ArrayList.java:659)
+	at java.util.ArrayList.get(ArrayList.java:435)
+	at Tanks.Terrain.displayTerrain(Terrain.java:161)
+	at Tanks.App.draw(App.java:398)
+	at processing.core.PApplet.handleDraw(PApplet.java:2426)
+	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
+	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
+java.lang.NullPointerException
+	at Tanks.Terrain.displayTerrain(Terrain.java:157)
+	at Tanks.App.draw(App.java:398)
 	at processing.core.PApplet.handleDraw(PApplet.java:2426)
 	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
 	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
 Tank at invalid index (draw function): 0
 Tank at invalid index (draw function): 0
 Tank at invalid index (draw function): 4
+Tank at invalid index (draw function): 0
+java.lang.NullPointerException
+	at Tanks.Terrain.displayTerrain(Terrain.java:157)
+	at Tanks.App.draw(App.java:398)
+	at processing.core.PApplet.handleDraw(PApplet.java:2426)
+	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
+	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
+java.lang.NullPointerException
+	at Tanks.Terrain.displayTerrain(Terrain.java:157)
+	at Tanks.App.draw(App.java:398)
+	at processing.core.PApplet.handleDraw(PApplet.java:2426)
+	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
+	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
+Tank at invalid index (draw function): 0
+Tank at invalid index (draw function): 0
 Tank at invalid index (draw function): 4
 Tank at invalid index (draw function): 0
 Tank at invalid index (draw function): 0
 Tank at invalid index (draw function): 0
-java.lang.NullPointerException
+Tank at invalid index (draw function): 0
+java.lang.IndexOutOfBoundsException: Index: 328, Size: 864
+	at java.util.ArrayList.rangeCheck(ArrayList.java:659)
+	at java.util.ArrayList.get(ArrayList.java:435)
 	at Tanks.Terrain.displayTerrain(Terrain.java:157)
-	at Tanks.App.draw(App.java:391)
+	at Tanks.App.draw(App.java:398)
 	at processing.core.PApplet.handleDraw(PApplet.java:2426)
 	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
 	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
-java.lang.NullPointerException
-	at Tanks.Terrain.displayTerrain(Terrain.java:157)
-	at Tanks.App.draw(App.java:391)
-	at processing.core.PApplet.handleDraw(PApplet.java:2426)
-	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
-	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
-java.lang.NullPointerException
-	at Tanks.Terrain.displayTerrain(Terrain.java:157)
-	at Tanks.App.draw(App.java:391)
-	at processing.core.PApplet.handleDraw(PApplet.java:2426)
-	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
-	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
-java.lang.NullPointerException
-	at Tanks.Terrain.displayTerrain(Terrain.java:157)
-	at Tanks.App.draw(App.java:391)
-	at processing.core.PApplet.handleDraw(PApplet.java:2426)
-	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
-	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
-java.lang.NullPointerException
-	at Tanks.Terrain.displayTerrain(Terrain.java:157)
-	at Tanks.App.draw(App.java:391)
-	at processing.core.PApplet.handleDraw(PApplet.java:2426)
-	at processing.awt.PSurfaceAWT$12.callDraw(PSurfaceAWT.java:1557)
-	at processing.core.PSurfaceNone$AnimationThread.run(PSurfaceNone.java:316)
-java.lang.ArrayIndexOutOfBoundsException
+Tank at invalid index (draw function): 4
 </pre>
 </span>
 </div>
@@ -1030,7 +958,7 @@ java.lang.ArrayIndexOutOfBoundsException
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 8.6</a> at 14/05/2024 2:46:06 PM</p>
+<a href="http://www.gradle.org">Gradle 8.6</a> at 14/05/2024 3:04:43 PM</p>
 </div>
 </div>
 </body>
