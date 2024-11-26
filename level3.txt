@@ -16,4 +16,4 @@ XX    T
              XT  T
               XT X
                XT
-                X
+                X 
